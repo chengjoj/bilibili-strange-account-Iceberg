@@ -5,6 +5,7 @@ https://chengjoj.github.io/bilibili-strange-account-Iceberg/
 推广视频【【冰山图】b站最诡异的账号是什么？】 https://www.bilibili.com/video/BV165hCzDE37/?share_source=copy_web&vd_source=8bace8656d7482a0fe50af82f067796a
 
 由于是按照粉丝量分类成各大组的，所以未来某个账号粉丝量超过了它所在的大组，本人很难及时发现，所以欢迎提醒我。也可以加入讨论群：334101307
+
 （注：1.本冰山图按照热度分类，各大分类内的排名不分先后，且热度仅截止25年8月27日及以前
 2.抽象不等于质量低，本冰山图只是收录本人自认为的诡异账号，请不要攻击账号作者   
 3.本冰山图仅收录原创内容很多搬运账号也很猎奇但不收录在内   
@@ -14,3 +15,4 @@ https://chengjoj.github.io/bilibili-strange-account-Iceberg/
 [最新消息]由于冰山图网站关闭，所以发一下图片留作纪念，一共300个词条截止2025年9月份的猎奇账号
 
 网站源码：https://pan.baidu.com/s/1efTIccYO6WzNyg9IQsWa1w?pwd=1234 提取码: 1234
+
