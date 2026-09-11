@@ -1,0 +1,681 @@
+@font-face {
+  font-family: 'amongus1';
+  src: url('/static/joffrey.ttf');
+}
+
+@font-face {
+  font-family: 'amongus2';
+  src: url('/static/VCRMONO.ttf');
+}
+
+@font-face {
+  font-family: 'roblox';
+  src: url('/static/roblox.ttf');
+}
+
+@font-face {
+  font-family: 'pusab';
+  src: url('/static/PUSAB.otf');
+}
+
+@font-face {
+  font-family: 'minecraft';
+  src: url('/static/Minecraft.otf');
+}
+
+@font-face {
+  font-family: 'gumball';
+  src: url('/static/gumball.ttf');
+}
+
+@font-face {
+  font-family: 'bauhausbold';
+  src: url('/static/bauhausbold.ttf');
+}
+
+@font-face {
+  font-family: 'spongeboy';
+  src: url('/static/spongeboy.otf');
+}
+
+@font-face {
+  font-family: 'adultswim';
+  src: url('/static/adultswim.ttf');
+}
+
+@font-face {
+  font-family: 'nunito';
+  src: url('/static/Nunito-Bold.ttf');
+}
+
+@font-face {
+  font-family: 'nunitolight';
+  src: url('/static/Nunito-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'allan';
+  src: url('/static/fonts/Allan/Allan-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'ceviche';
+  src: url('/static/fonts/Ceviche_One/CevicheOne-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'federant';
+  src: url('/static/fonts/Federant/Federant-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'londrina';
+  src: url('/static/fonts/Londrina_Solid/LondrinaSolid-Regular.ttf');
+}
+
+body {
+	background: black;
+	text-align: center;
+	max-width: 1200px;
+	margin: auto;
+	color: white;
+	font-family: "Arial", "Ubuntu", sans-serif;
+}
+
+.bodyclass {
+  background-size: 100% 100%;
+  min-width: 100%;
+  min-height: 100%;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: -1000;
+  margin: 0 auto;
+  position: fixed;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+.icebergcontent ul {
+	margin: 0;
+	padding: 0;
+}
+
+.icebergcontent li {
+	display: inline-block;
+	font-weight: bold;
+	vertical-align: text-bottom;
+}
+
+.hasdescription {
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.underline:hover {
+  border-top: 2px solid rgba(255,255,255,0.3);
+}
+
+.overline {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+a {
+	color: lightblue;
+}
+
+a:hover {
+	color: #aaa;
+}
+
+li a {
+	text-decoration: none;
+}
+
+.sidebyside {
+  text-align: left;
+}
+
+.threecolumns {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	text-align: left;
+}
+
+.threecolumnscentered {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	text-align: center;
+}
+
+.shuffled:nth-child(5n+0) {
+	transform: translateY(5px);
+}
+.shuffled:nth-child(5n+1) {
+	transform: translateY(-5px);
+}
+.shuffled:nth-child(5n+2) {
+	transform: translateY(0px);
+}
+.shuffled:nth-child(5n+3) {
+	transform: translateY(7px);
+}
+.shuffled:nth-child(5n+4) {
+	transform: translateY(2px);
+}
+
+.fontdeco {
+	text-shadow: 1px 1px 2px black, 1px -1px 2px black, -1px -1px 2px black, -1px 1px 2px black, 1px 1px 2px black, 2px 2px 4px black;
+}
+
+.monospace, .monospace * {
+	font-family: "Arial", "Ubuntu Mono", monospace;
+	word-break: break-all;
+}
+
+.right {
+	text-align: right;
+}
+
+.pfp {
+    max-width: 50vw;
+}
+
+.gold {
+  color: rgba(255,204,51,0.9) !important;
+}
+
+.gold:visited {
+  color: rgba(245,194,41,0.9) !important;
+}
+
+
+
+.shadowbox {
+}
+
+.rainbow {
+    text-align: center;
+    text-decoration: underline;
+}
+.rainbow_text_animated {
+    background: linear-gradient(to right, #6666ff, #0099ff , #00ff00, #ff3399, #6666ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: rainbow_animation 6s ease-in-out infinite;
+    background-size: 400% 100%;
+}
+
+@keyframes rainbow_animation {
+    0%,100% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 100% 0;
+    }
+}
+
+
+
+.greenbutton {
+  background-color: green;
+}
+
+.footer {
+  margin-top: 1.5%;
+  margin-bottom: 1.5%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  color: rgb(202,242,255);
+}
+
+.footer > div {
+
+}
+
+.blueback {
+  background-color: rgba(60,100,160,0.98);
+  border-radius: 6px;
+}
+
+.redback {
+  background-color: rgba(160,100,60,0.9);/*rgba(0,40,100,0.5);*/
+  border-radius: 6px;
+  min-height: 10%;
+}
+
+.redback a {
+  color: blue;
+}
+
+.loginthing {
+  font-size: 135%;
+}
+
+.loginthing a:hover {
+  background-color: rgba(0,0,0,0.5) !important;
+}
+
+.desktoponly {
+  display: none;
+}
+
+@media screen and (min-width: 480px) {
+  .categorylist {
+    width: 50%;
+    margin-left: 25% !important;
+  }
+
+  .desktoponly {
+    display: inline;
+  }
+
+  .loginthing {
+    font-size: 110%;
+  }
+}
+
+button {
+  outline: none;
+  background-repeat:no-repeat;
+  border: none;
+  overflow: hidden;
+  color: rgb(202,242,255);
+  background-color: rgba(100,140,200,0.8);
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: grey;
+}
+
+button:active {
+  background-color: purple;
+}
+
+button:disabled {
+  background-color: rgb(50,50,50);
+  color: lightgrey;
+}
+
+input[type=submit] {
+  outline: none;
+  background-repeat:no-repeat;
+  border: none;
+  overflow: hidden;
+  color: rgb(202,242,255);
+  background-color: rgba(100,200,140,0.8);
+  border-radius: 5px;
+}
+
+input[type=submit]:hover {
+  background-color: grey;
+}
+
+input[type=submit]:active {
+  background-color: purple;
+}
+
+input[type=submit]:disabled {
+  background-color: rgb(50,50,50);
+  color: lightgrey;
+}
+
+.iceberglist {
+  padding-top: 0.25%;
+  padding-bottom: 0.5%;
+  color: rgba(182,222,245,255);
+  line-height: 130%;
+}
+
+.iceberglist a {
+  color: rgb(200, 230, 240);
+}
+
+.iceberglist a:hover {
+  background-color: rgb(122,162,185);
+}
+
+.iceberglist a:visited {
+  color: rgba(152,190,255,255);
+  text-decoration:underline;
+}
+
+.iceberglist a:active {
+  background-color: rgb(112,152,175);
+}
+
+.category {
+  color: white;
+}
+
+.categoryspace {
+  background-color: rgba(255,255,255,0.03);
+  border-radius: 30px;
+  margin: 10px;
+  padding: 3px;
+  padding-bottom: 10px;
+  text-align: left;
+  padding-left: 10px;
+}
+
+.submissionspace {
+  background-color: rgba(255,255,255,0.1);
+  border-radius: 3px;
+  margin: 10px;
+  padding: 10px;
+}
+
+
+.cat_animals_nature {
+  color: #74c421 !important;
+}
+
+.cat_art_culture {
+  color: #a4aa32 !important;
+}
+
+.cat_books_literature {
+  color: #58332a !important;
+}
+
+.cat_business_organizations {
+  color: #85bb65 !important;
+}
+
+.cat_food_cooking {
+  color: #ff5454 !important;
+}
+
+.cat_geography {
+  color: lightgrey !important;
+}
+
+.cat_human {
+  color: #E8BEAC !important;
+}
+
+.cat_internet {
+  color: #eeeeee !important;
+}
+
+.cat_lost_media {
+  color: darkgrey !important;
+}
+
+.cat_history {
+  color: #eeb847 !important;
+}
+
+.cat_minecraft {
+  color: #81aa5d !important;
+}
+
+.cat_movies_television {
+  color: #ff895b !important;
+}
+
+.cat_movies_television_meta {
+  color: #ff8240 !important;
+}
+
+.cat_music {
+  color: #d3a7eb !important;
+}
+
+.cat_music_meta {
+  color: #c767fd !important;
+}
+
+.cat_podcasts {
+  color: green;
+}
+
+.cat_science {
+  color: #eeeeff !important;
+}
+
+.cat_technology {
+  color: #111111 !important;
+}
+
+.cat_roleplaying_characters {
+  color: #10de30 !important;
+}
+
+.cat_traditional_games {
+  color: #ee816c !important;
+}
+
+.cat_videogames_console {
+  color: #ffe12c !important;
+}
+
+.cat_videogames_pc {
+  color: #4cffe6 !important;
+}
+
+.cat_videogames_meta {
+  color: #ff71eb !important;
+}
+
+.cat_weird {
+  color: #f775ff !important;
+}
+
+.cat_youtube {
+  color: #c4302b !important;
+}
+
+.cat_memes {
+  color: #ff6d6d !important;
+}
+
+.cat_meta {
+  color: gray !important;
+}
+
+.cat_roblox {
+  color: #ff5959 !important;
+}
+
+.cat_sports {
+  color: #e4c100 !important;
+}
+
+.linktitle {
+  color: blue;
+}
+
+.texttitle {
+  color: rgb(220,220,220);
+}
+
+
+
+.resp-sharing-button__link,
+.resp-sharing-button__icon {
+  display: inline-block
+}
+
+.resp-sharing-button__link {
+  text-decoration: none;
+  color: #fff;
+  margin: 0.1em
+}
+
+.resp-sharing-button {
+  border-radius: 5px;
+  transition: 25ms ease-out;
+  padding: 0.5em 0.75em;
+  font-family: Helvetica Neue,Helvetica,Arial,sans-serif
+}
+
+.resp-sharing-button__icon svg {
+  width: 1em;
+  height: 1em;
+  margin-right: 0.5em;
+  vertical-align: top
+}
+
+.resp-sharing-button--small svg {
+  margin: 0;
+  vertical-align: middle
+}
+
+/* Non solid icons get a stroke */
+.resp-sharing-button__icon {
+  stroke: #fff;
+  fill: none
+}
+
+/* Solid icons get a fill */
+.resp-sharing-button__icon--solid,
+.resp-sharing-button__icon--solidcircle {
+  fill: #fff;
+  stroke: none
+}
+
+.resp-sharing-button--twitter {
+  background-color: #55acee
+}
+
+.resp-sharing-button--twitter:hover {
+  background-color: #2795e9
+}
+
+.resp-sharing-button--pinterest {
+  background-color: #bd081c
+}
+
+.resp-sharing-button--pinterest:hover {
+  background-color: #8c0615
+}
+
+.resp-sharing-button--facebook {
+  background-color: #3b5998
+}
+
+.resp-sharing-button--facebook:hover {
+  background-color: #2d4373
+}
+
+.resp-sharing-button--imagedownload {
+  background-color: #375ca9
+}
+
+.resp-sharing-button--imagedownload:hover {
+  background-color: #2d4373
+}
+
+.resp-sharing-button--tumblr {
+  background-color: #35465C
+}
+
+.resp-sharing-button--tumblr:hover {
+  background-color: #222d3c
+}
+
+.resp-sharing-button--reddit {
+  background-color: #5f99cf
+}
+
+.resp-sharing-button--reddit:hover {
+  background-color: #3a80c1
+}
+
+.resp-sharing-button--google {
+  background-color: #dd4b39
+}
+
+.resp-sharing-button--google:hover {
+  background-color: #c23321
+}
+
+.resp-sharing-button--linkedin {
+  background-color: #0077b5
+}
+
+.resp-sharing-button--linkedin:hover {
+  background-color: #046293
+}
+
+.resp-sharing-button--email {
+  background-color: #777
+}
+
+.resp-sharing-button--email:hover {
+  background-color: #5e5e5e
+}
+
+.resp-sharing-button--xing {
+  background-color: #1a7576
+}
+
+.resp-sharing-button--xing:hover {
+  background-color: #114c4c
+}
+
+.resp-sharing-button--whatsapp {
+  background-color: #25D366
+}
+
+.resp-sharing-button--whatsapp:hover {
+  background-color: #1da851
+}
+
+.resp-sharing-button--hackernews {
+background-color: #FF6600
+}
+.resp-sharing-button--hackernews:hover, .resp-sharing-button--hackernews:focus {   background-color: #FB6200 }
+
+.resp-sharing-button--vk {
+  background-color: #507299
+}
+
+.resp-sharing-button--vk:hover {
+  background-color: #43648c
+}
+
+.resp-sharing-button--facebook {
+  background-color: #3b5998;
+  border-color: #3b5998;
+}
+
+.resp-sharing-button--facebook:hover,
+.resp-sharing-button--facebook:active {
+  background-color: #2d4373;
+  border-color: #2d4373;
+}
+
+.resp-sharing-button--twitter {
+  background-color: #55acee;
+  border-color: #55acee;
+}
+
+.resp-sharing-button--twitter:hover,
+.resp-sharing-button--twitter:active {
+  background-color: #2795e9;
+  border-color: #2795e9;
+}
+
+.resp-sharing-button--reddit {
+  background-color: #5f99cf;
+  border-color: #5f99cf;
+}
+
+.resp-sharing-button--reddit:hover,
+.resp-sharing-button--reddit:active {
+  background-color: #3a80c1;
+  border-color: #3a80c1;
+}
