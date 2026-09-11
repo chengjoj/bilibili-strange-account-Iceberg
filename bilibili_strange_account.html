@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>bilibili strange account Iceberg</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+
+    
+<meta property="og:title" content="bilibili strange account Iceberg">
+<meta property="og:description" content="made by 屑晟杂谈">
+
+
+
+    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="static/theme_normal.css">
+    <script src="static/vue@2.js"></script>
+    <script src="static/vue-i18n.js"></script>
+    <script src="static/linkify.min.js"></script>
+    <script src="static/linkify-string.min.js"></script>
+
+    <style>
+
+
+
+    /* default */
+    [v-cloak] { display:none }
+    [v-cloak] > * { display:none }
+
+    .svgcolor {
+      filter: invert(1) saturate(4) hue-rotate(145deg);
+    }
+
+    .breaklinks a {
+      overflow-wrap: break-word;
+    }
+
+    </style>
+    
+    
+
+</head>
+<body>
+
+
+<br>
+
+
+
+<noscript>
+<div class="redback">
+ This site needs JavaScript to work.
+ Here are the <a href="https://www.enable-javascript.com/">
+ instructions how to enable JavaScript in your web browser</a>
+</div>
+<br>
+</noscript>
+
+
+
+<div id="tooltips-container"></div>
+
+<div id="app" style="max-width: 100%;">
+  <div id="iceberg">
+  <template v-if="!watermark || (watermark && !iceberg.hidetitle)">
+  <br>
+  <div style="display: flex; flex-wrap: wrap;" v-bind:style="{'justify-content': isMobile() ? 'center' : 'space-between'}">
+    <div style="flex: 2; display: flex; justify-content: center;">
+      <span style="margin-right: auto;">
+        <template v-if="!watermark"><a v-if="iceberg.visibility == 2 || iceberg.visibility == 3" v-bind:style="{'flex-basis': isMobile() ? '110%' : null, 'display': isMobile() ? 'block' : null}" :class="'cat_' + iceberg.category.toLowerCase().replace('-', '_').replace('&', '_').replace('/', '_').replace(' ', '_')" style="font-weight: bold; border-radius: 5px; text-align: left;font-size: 100%;background-color: rgba(255,255,255,0.2);vertical-align: sub;">{{ iceberg.category }} </a><span v-else style="font-weight: bold; border-radius: 5px; text-align: left; background-color(255,255,255,0.2);vertical-align: sub;"><template v-if="iceberg.visibility==1">unlisted</template><template v-else>private</template></span></template>
+      </span>
+    </div>
+    <h1 style="flex: 4; margin-top:0px;display:flex; justify-content: center;" v-bind:style="{'flex-basis': isMobile() ? '100%' : null, 'order': isMobile() ? 2 : null, 'margin-bottom': edit ? '0px' : null}">
+      <span>{{ iceberg.name.split('_').join(' ') }} {{ OTHER_CATEGORIES.includes(iceberg.category) ? '' : $t('Iceberg') }}</span>
+     </h1>
+    <div style="flex: 2; display: flex; justify_content: center;">
+      <span style="margin-left: auto;">
+              <!-- Sharingbutton Clipboard -->
+      <template v-if="!watermark">&nbsp<template v-if="clipboardcopied"><span style="color:green">{{ $t('link copied to clipboard!') }}</span></template><button :title="$t('copy link to clipboard')" style="max-height: 25px; margin-top: 7px;" @click="copyLinkToClipboard()">📋</button></template>
+
+      </span>
+    </div>
+
+  </div>
+
+  <h1 style="margin-top:-15px;" v-bind:style="{'margin-bottom': edit ? '0px' : null}">
+  <span v-if="!watermark" v-for="icon in iceberg.icons" :title="icon" style="display: inline-block; overflow: hidden; margin: 0px; padding: 0px; width: 16px; height: 16px; background-image:url('static/icontypes.png'); background-repeat: no-repeat; vertical-align: middle;" :style="{backgroundPosition: -icontypes.indexOf(icon)*16 + 'px'}"></span>
+  <template v-if="!watermark"><span v-if="iceberg.nsfw" style="color: rgb(255, 0, 0); font-size: 60%; vertical-align: middle;" v-bind:style="{'flex-basis': isMobile() ? '110%' : null, 'display': isMobile() ? 'block' : null}">nsfw </span><span v-if="iceberg.wip" style="color: rgb(255, 243, 0); font-size: 60%; vertical-align: middle;" v-bind:style="{'flex-basis': isMobile() ? '110%' : null, 'display': isMobile() ? 'block' : null}">work in progress </span><span v-if="iceberg.proposalswanted" style="color: rgb(120, 223, 20); font-size: 60%; vertical-align: middle;" v-bind:style="{'flex-basis': isMobile() ? '110%' : null, 'display': isMobile() ? 'block' : null}">proposals wanted</span></template>
+  </h1>
+
+  <template v-if="!edit && !watermark && isMobile() && iceberg.icons.includes('>95% descriptions')">
+    <span style="font-size:80%; color: lightgreen;">{{ $t('tap and hold over overlined entries to see their description') }}</span><br><br>
+  </template>
+
+
+  <template v-if="!edit && iceberg.description.length > 0">
+<p class="breaklinks" v-html="linkifyStr(iceberg.description, {nl2br:true, rel:'nofollow'})"></p>
+  </template>
+
+  </template>
+  <div v-bind:style="{'width': iceberg.side ? '100%' : '100%'}">
+
+    <template v-if="iceberg.categories.length > 0 && iceberg.categorylegend">
+      <div class="layer" v-bind:style="{'border-color': iceberg.border.color + iceberg.border.alpha, borderWidth: parseInt(iceberg.border.alpha, 16)==0 ? '0px' : '2px' }" style=" min-height: 1vw;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        align-items: center;
+        padding-bottom: 0;">
+      <span v-for="category of iceberg.categories" style="padding-left: 2em; padding-right: 2em;">
+        <span @click="filterCategory(category)" class="categoryshadow" style="vertical-align: middle;" v-bind:style="{ color: category.fontcolor, fontFamily: category.font, fontSize: category.fontsize, fontWeight: category.fontweight }" v-bind:class="{ fontdeco: category.fontdeco, 'selectedcategory': categoryfilter.includes(category.name) }">{{ category.name }}
+        </span>
+      </span>
+      <template v-if="categoryfilter.length > 0">
+        <div style="flex-basis: 100%; height: 30;"></div>
+        <button style="margin-top: 5px;" @click="categoryfilter = []">reset category selection</button>
+      </template>
+      </div>
+    </template>
+
+    <template v-if="iceberg.subcategories.length > 0 && iceberg.subcategorylegend">
+      <div class="layer" v-bind:style="{'border-color': iceberg.border.color + iceberg.border.alpha }" style=" min-height: 1vw;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        align-items: center;
+        padding-bottom: 0;">
+      <span v-for="category of iceberg.subcategories" style="padding-left: 2em; padding-right: 2em;" @click="filterSubcategory(category)" class="categoryshadow" v-bind:class="{'selectedcategory': subcategoryfilter.includes(category.name)}">
+        <span style="vertical-align: middle;" v-bind:style="{ color: category.fontcolor, fontFamily: iceberg.font }" v-bind:class="{ fontdeco: category.fontdeco }">{{ category.name }}
+        <span style="font-size: 60%; vertical-align: top;" v-bind:style="{'color': category.fontcolor}" v-bind:class="{'fontdeco' : category.fontdeco}">{{ category.marker }}</span>
+        </span>
+      </span>
+      <template v-if="subcategoryfilter.length > 0">
+        <div style="flex-basis: 100%; height: 30;"></div>
+        <button style="margin-top: 5px;" @click="subcategoryfilter = []">reset marker filter</button>
+      </template>
+      </div>
+    </template>
+
+    <div class="icebergcontent">
+    <template v-for="(level, levelname) in iceberg.levels">
+      <template v-if="level.active">
+      <div style="display: flex; align-items: stretch;" v-bind:style="{'flex': iceberg.side ? '80% 20%' : '100%'}">
+      <div class="layer" @drop.prevent="dropLink(event, levelname, 0)" @dragenter.prevent @dragover.prevent="dragOver" v-bind:style="{backgroundImage: 'url(static/'+level.background+')', borderColor: 'rgba('+(parseInt(iceberg.border.color.slice(1,3),16)-10*levelname)+','+(parseInt(iceberg.border.color.slice(3,5),16)-10*levelname)+','+(parseInt(iceberg.border.color.slice(5,7),16)-10*levelname)+','+(parseInt(iceberg.border.alpha, 16)/255)+')', 'width': iceberg.side ? '80%' : '100%', 'min-height': edit && level.collapse ? '1vw' : iceberg.minlayerheight + 'vw', borderWidth: parseInt(iceberg.border.alpha, 16)==0 ? '0px' : '2px' }" style="background-size: 100% 100%; background-repeat: no-repeat; display: flex; flex: 10% 90%; flex-direction: column;">
+      <!--<img :src="'/static/'+level.background" alt="image" title="image" style="opacity:0 ; pointer-events: none; position: absolute; left:0; top: 0;" />-->
+      <label v-if="edit" style="left: 0; top: 0;" class="fontdeco"><input type="checkbox" v-model="level.collapse" @change="level.collapse=!level.collapse">{{ $t('Hide entries') }} ({{ level.content.length }})</label><br>
+      <h2 v-if="iceberg.uselevelnames && level.name" class="fontdeco" v-bind:style="{fontFamily: iceberg.font}">{{ level.name }}</h2>
+      <div style="
+      width: 100%; height: 100%;
+      justify-content: center;
+      align-items: center;" v-bind:style="{display: !edit && ['threecolumns', 'threecolumnscentered'].includes(iceberg.layout) ? 'block' : 'flex'}">
+      <div v-bind:class="{'left': edit}" v-bind:style="{width: edit ? '100%' : null}">
+      <ul style="margin-top:1%;" v-bind:class="{ [iceberg.layout]: !edit && ['threecolumns', 'threecolumnscentered'].includes(iceberg.layout) }">
+      <template v-if="!edit || !level.collapse" v-for="(entry, index) in level.content">
+      	<li v-bind:class="{ [iceberg.layout]: (!edit && ['shuffled', 'sidebyside'].includes(iceberg.layout)) }" v-bind:style="{'margin': edit || ['threecolumns', 'threecolumnscentered'].includes(iceberg.layout) ? '5px 20px' : '10px 20px', width: edit ? '90%' : null}">
+          <template v-if="!edit">
+          <div v-if="!clicked[entry] && ((entry.category && entry.category == 'spoiler') || (entry.subcategory && JSON.parse(entry.subcategory).map(getLowerSubcategoryName).map(sc => sc.name).includes('spoiler')))" class="spoiler" v-on:click="clickEntry(entry)">{{ "x".repeat(entry.name.length) }}</div>
+          <template v-else>
+            <template v-if="(categoryfilter.length == 0 || categoryfilter.some(elem => elem == entry.category)) && (subcategoryfilter.length == 0 || (entry.subcategory && subcategoryfilter.every(elem => JSON.parse(entry.subcategory).includes(elem))))">
+              <template v-if="entry.link">
+            		<a target="_blank" onclick="considerMiddleClick(event)" onauxclick="considerMiddleClick(event)" v-tap="openLink.bind(null, {link:fullLink(entry.link)})" v-hold="showDescription.bind(null, {description:entry.description})" :title="entry.description" :href="fullLink(entry.link)" class="entrylink" style="display: inline; word-break: break-word;"  v-bind:style="[{backgroundColor: (!watermark && entry.updated && iceberg.highlightupdated && iceberg.created < loadtime - twentyfourhours && entry.updated > loadtime - changedelta) ? iceberg.highlightrgba : null, color: entry.category ? getByKey(iceberg.categories, entry.category).fontcolor : iceberg.fontcolor, fontFamily: entry.category ? getByKey(iceberg.categories, entry.category).font : iceberg.font, fontSize: entry.category ? getByKey(iceberg.categories, entry.category).fontsize : iceberg.fontsize, fontWeight: entry.category ? getByKey(iceberg.categories, entry.category).fontweight : iceberg.fontweight }]" v-bind:class="{fontdeco: entry.category ? getByKey(iceberg.categories, entry.category).fontdeco : iceberg.fontdeco, 'hasdescription': !watermark && entry.description, overline: !edit && !watermark && entry.link}">{{ entry.name }}<template v-if="entry.subcategory"><span v-for="subcat in JSON.parse(entry.subcategory)" :title="subcat" style="font-size: 60%; vertical-align: top;" v-bind:style="{'color': getByKey(iceberg.subcategories, subcat).fontcolor, 'fontFamily': iceberg.font}" v-bind:class="{'fontdeco' : getByKey(iceberg.categories, entry.category).fontdeco, underline: !edit && !watermark && entry.description }">{{ getByKey(iceberg.subcategories, subcat).marker + ' ' }}</span></template></a>
+              </template>
+            	<template v-else>
+            		<div :title="entry.description" style="display: inline; word-break: break-word;" v-hold="showDescription.bind(null, {description:entry.description})" v-bind:style="[{backgroundColor: (!watermark && entry.updated && iceberg.highlightupdated && iceberg.created < loadtime - twentyfourhours && entry.updated > loadtime - changedelta) ? iceberg.highlightrgba : null, color: entry.category ? getByKey(iceberg.categories, entry.category).fontcolor : iceberg.fontcolor, fontFamily: entry.category ? getByKey(iceberg.categories, entry.category).font : iceberg.font, fontSize: entry.category ? getByKey(iceberg.categories, entry.category).fontsize : iceberg.fontsize, fontWeight: entry.category ? getByKey(iceberg.categories, entry.category).fontweight : iceberg.fontweight }]" v-bind:class="{fontdeco: entry.category ? getByKey(iceberg.categories, entry.category).fontdeco : iceberg.fontdeco, underline: !edit && !watermark && entry.description, 'hasdescription': !watermark && entry.description, overline: !edit && !watermark && entry.link }">{{ entry.name }}<template v-if="entry.subcategory"><span v-for="subcat in JSON.parse(entry.subcategory)" v-if="subcat != 'spoiler'" :title="subcat" style="font-size: 60%; vertical-align: top;" v-bind:style="{'color': getByKey(iceberg.subcategories, subcat).fontcolor, 'fontFamily': iceberg.font}" v-bind:class="{'fontdeco' : getByKey(iceberg.categories, entry.category).fontdeco}">{{ getByKey(iceberg.subcategories, subcat).marker + ' ' }}</span></template></div>
+            	</template>
+            </template>
+          </template>
+        </template>
+      	</li>
+      </template>
+
+      </ul>
+
+      </div>
+      </div>
+      </div>
+      <div v-if="iceberg.side" class="side" v-bind:style="{backgroundImage: 'url(static/'+level.sidebackground+')', borderColor: 'rgba('+(parseInt(iceberg.border.color.slice(1,3),16)-10*levelname)+','+(parseInt(iceberg.border.color.slice(3,5),16)-10*levelname)+','+(parseInt(iceberg.border.color.slice(5,7),16)-10*levelname)+','+(parseInt(iceberg.border.alpha, 16)/255)+')', 'min-height': iceberg.minlayerheight + 'vw'}" >
+      <div v-if="level.description" class="fontdeco">{{ level.description }}</div>
+      </div>
+      </template>
+      </template>
+    </div>
+    </div>
+    <template v-if="!watermark || (watermark && !iceberg.hidefooter)">
+      <div style="display: flex; justify-content: space-between;">
+        <p style="padding-left: 1em; color: lightgray;">
+          <template v-if="!iceberg.hidedate"><span :title="'created on ' + toDate(iceberg.created)">{{ toDate(iceberg.lastedit) }}</span></template><template v-if="!iceberg.hidedate && !iceberg.hidenumentries">, </template><template v-if="!iceberg.hidenumentries">{{ entries }} entries</template>
+        </p>
+        <p style="">
+          <template v-if="!watermark">
+              overlined entries have descriptions (hover over or tap and hold them to see them)<br>underlined entries have links
+          </template>
+        </p>
+        <p style="padding-right: 1em;">
+          <template v-if="iceberg.creator">{{ $t('made by') }}
+            <template v-for="creator in iceberg.creatorlink">
+              <span style="color: rgba(100,100,255,1.0); font-weight:bold">{{ creator.name }}</span>
+              <span v-else>{{ creator.name }}</span>
+            </template>
+          </template>
+          <span v-if="watermark" style="color:rgba(255,255,255,0.8); font-size:80%;">
+            &nbsp<template v-if="!iceberg.creator">{{ $t('created') }}</template>&nbsp{{ $t('with') }}&nbsp<span style="color:rgba(200,200,255,0.8);">icebergcharts.com</span><span v-if="iceberg.backgroundsource">, background by {{ iceberg.backgroundsource }}</span>
+          </span>
+        </p>
+      </div>
+    </template>
+  </div>
+
+
+  <template v-if="iscreated">
+
+  <template v-if="optin">
+    <template v-if="!watermark && iceberg.explainers.filter(e => !e.proposal).length > 0">
+      <h3>{{ $t('Explainer videos') }}</h3>
+
+        <div v-for="explainer in iceberg.explainers" v-if="!explainer.proposal">
+          <iframe
+          :width="isMobile() ? '90%;' : '640px'"
+          height="315"
+          v-bind:src="'https://www.youtube-nocookie.com/embed/'+explainer.id"
+          frameborder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          title="Explainer Video"
+          ></iframe>
+        </div>
+    </template>
+
+    <template v-if="!watermark && iceberg.relevant.length > 0">
+      <h3>{{ $t('Relevant videos') }}</h3>
+      <div v-for="relevant in iceberg.relevant">
+        <iframe
+        :width="isMobile() ? '90%;' : '300px'"
+        height="200"
+        v-bind:src="'https://www.youtube-nocookie.com/embed/'+relevant.id"
+        frameborder="0"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        title="Relevant Video"
+        ></iframe>
+      </div>
+    </template>
+  </template>
+  <template v-else-if="!watermark && (iceberg.explainers.filter(e => !e.proposal).length > 0 || iceberg.relevant.length > 0)">
+    <div style="background-color: black; width: 560px; max-width: 100%; height: 315px; color: white; text-align: center;">
+      By loading the explainer videos you agree to the Youtube <a href="https://policies.google.com/privacy?hl=en">privacy policy</a>
+      <button @click="doOptin()">OK</button>
+    </div>
+  </template>
+
+  </template>
+
+</div>
+
+
+
+
+<script>
+
+if (!String.prototype.startsWith) {
+    Object.defineProperty(String.prototype, 'startsWith', {
+        value: function(search, rawPos) {
+            var pos = rawPos > 0 ? rawPos|0 : 0;
+            return this.substring(pos, pos + search.length) === search;
+        }
+    });
+}
+
+
+
+const LANGMAP = {"en":"English","pt":"Portugu\u00eas","de":"Deutsch","es":"Espa\u00f1ol","ru":"\u0420\u0443\u0441\u0441\u043a\u0438\u0439","it":"Italiano","fr":"Fran\u00e7ais","zh":"Chinese","ar":"\u0627\u0644\u0639\u0631\u0628\u064a\u0629","id":"Indonesian","cy":"Cymraeg","el":"\u0395\u03bb\u03bb\u03b7\u03bd\u03b9\u03ba\u03ac","fi":"Finnish","he":"\u05e2\u05b4\u05d1\u05e8\u05b4\u05d9\u05ea","pl":"Polski","ro":"Rom\u00e2n\u0103","sk":"Slov\u00e1k","tl":"Tagalog","Id":"Indonesian","zh-yue":"Cantonese","fu":"Engwish","sim":"Simlish","arr":"Pirate"}
+
+const i18n = new VueI18n({
+    locale: localStorage.lang != null ? localStorage.lang : "en", // set default locale
+    messages: {},
+    silentTranslationWarn: true,
+})
+
+function loadLocale() {
+  var xmlhttp=new XMLHttpRequest();
+  xmlhttp.open("GET", "/translations/"+i18n.locale+".json", false);
+  xmlhttp.send();
+  if (xmlhttp.status==200 && xmlhttp.readyState == 4 ) {
+    translations = JSON.parse(xmlhttp.responseText)
+    i18n.setLocaleMessage(i18n.locale, translations)
+    document.querySelector('html').setAttribute('lang', i18n.locale);
+  } else {
+    translations = {}
+  }
+}
+
+if (i18n.locale != "en") {
+  loadLocale()
+}
+
+</script>
+
+
+
+<script src="static/tap-and-hold.js"></script>
+<script src="static/popper.min.js"></script>
+<script src="static/tippy-bundle.umd.min.js"></script>
+
+<script>
+function considerMiddleClick(event) {
+    if (!(event.button == 1 || event.button == 4)) {
+      // if not middle click, prevent default action
+      event.preventDefault()
+    }
+}
+
+window.linkifyStr = linkifyStr
+
+const popperProps = {
+    container: () => document.getElementById('tooltips-container'),
+    placement: 'top'
+};
+
+tippy.setDefaultProps(popperProps)
+
+Vue.use(vueTapAndHold, {
+	holdTime: 500, // default is 1000
+	tapTime: 200 // default is 200
+})
+
+// Register a global custom directive called `v-focus`
+Vue.directive('focus', {
+  // When the bound element is inserted into the DOM...
+  inserted: function (el) {
+    // Focus the element
+    el.focus()
+  }
+})
+
+function URIhasField(field) {
+  if (typeof window === undefined) {
+    return false;
+  }
+  var url = window.location.href;
+  if(url.indexOf('?' + field + '=') != -1) {
+    return true;
+  } else if(url.indexOf('&' + field + '=') != -1) {
+    return true;
+  }
+  return false;
+}
+
+var app = new Vue({
+  el: '#app',
+  i18n,
+  data: {
+		iceberg: {"advanced": true, "allowduplicates": false, "backgroundsource": "ElementyFireXD", "border": {"color": "purple", "style": "solid", "width": "2px"}, "categories": [{"font": "arial", "fontcolor": "#792525", "fontdeco": true, "fontsize": "100%", "fontweight": "700", "name": "\u6211\u7684\u4e16\u754c\uff0c\u8ff7\u4f60\u4e16\u754c"}, {"font": "arial", "fontcolor": "#009dff", "fontdeco": true, "fontsize": "100%", "fontweight": "700", "name": "\u5c0f\u54c1"}, {"font": "arial", "fontcolor": "#ffffff", "fontdeco": true, "fontsize": "100%", "fontweight": "700", "name": "ai"}, {"font": "arial", "fontcolor": "#00ff1e", "fontdeco": true, "fontsize": "100%", "fontweight": "700", "name": "\u753b\u753b"}, {"font": "arial", "fontcolor": "#ffdd00", "fontdeco": true, "fontsize": "100%", "fontweight": "700", "name": "\u5176\u4ed6"}, {"font": "arial", "fontcolor": "#e100ff", "fontdeco": true, "fontsize": "100%", "fontweight": "700", "name": "\u6076\u641e"}, {"font": "arial", "fontcolor": "#00ffee", "fontdeco": true, "fontsize": "100%", "fontweight": "700", "name": "\u8d5b\u9a6c\u5a18\u76f8\u5173"}, {"font": "arial", "fontcolor": "#666666", "fontdeco": true, "fontsize": "100%", "fontweight": "700", "name": "\u914d\u97f3"}, {"font": "arial", "fontcolor": "#4c9054", "fontdeco": true, "fontsize": "100%", "fontweight": "700", "name": "\u6897"}, {"font": "arial", "fontcolor": "#996100", "fontdeco": true, "fontsize": "100%", "fontweight": "700", "name": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)"}, {"font": "arial", "fontcolor": "#ff6b6b", "fontdeco": true, "fontsize": "100%", "fontweight": "700", "name": "\u7f8e\u98df"}, {"font": "arial", "fontcolor": "#c4ff6b", "fontdeco": true, "fontsize": "100%", "fontweight": "700", "name": "\u52a8\u753b\u5c0f\u5267\u573a"}, {"font": "arial", "fontcolor": "#bc6bff", "fontdeco": true, "fontsize": "100%", "fontweight": "700", "name": "\u97f3\u4e50"}, {"font": "arial", "fontcolor": "#ffad9e", "fontdeco": true, "fontsize": "100%", "fontweight": "700", "name": "\u4e8c\u6b21\u5143\u76f8\u5173(\u52a8\u6f2b\uff0c\u4e8c\u6e38...)"}, {"font": "arial", "fontcolor": "#272e68", "fontdeco": true, "fontsize": "100%", "fontweight": "700", "name": "\u5c11\u5973\u4e50\u961f\u76f8\u5173(gbc\uff0cmygo...)"}, {"font": "arial", "fontcolor": "#275c7c", "fontdeco": true, "fontsize": "100%", "fontweight": "700", "name": "\u5c0f\u8bf4"}], "category": "Weird", "categorylegend": true, "created": 1756228724.7856839, "creator": "\u5c51\u665f\u6742\u8c08", "creatorlink": [{"name": "\u5c51\u665f\u6742\u8c08"}], "description": "\u5728\u6d69\u701a\u7684\u4e2d\u6587\u4e92\u8054\u7f51\u4e16\u754c\u4e2d\uff0c\u5b58\u5728\u7740\u4e00\u4e9b\u793e\u4ea4\u8d26\u53f7\uff0c\u8fd9\u4e9b\u8d26\u53f7\u6301\u7eed\u53d1\u5e03\u7740\u4ee4\u4eba\u8d39\u89e3\u3001\u8be1\u5f02\u751a\u81f3\u8d85\u73b0\u5b9e\u7684\u5185\u5bb9\u3002\u8fd9\u4e9b\u5185\u5bb9\u53ef\u80fd\u6e90\u4e8e\u4f5c\u8005\u7684\u641e\u602a\u5e7d\u9ed8\u3001\u7a81\u5982\u5176\u6765\u7684\u5947\u601d\u5999\u60f3\uff0c\u4e5f\u53ef\u80fd\u662f\u67d0\u79cd\u7cbe\u5fc3\u7b56\u5212\u7684\u884c\u4e3a\u827a\u672f\u6216\u53d9\u4e8b\u5b9e\u9a8c\u3002\u5176\u80cc\u540e\u7684\u52a8\u673a\uff0c\u5e38\u5e38\u8ba9\u89c2\u4f17\u611f\u5230\u597d\u5947\u3001\u56f0\u60d1\u751a\u81f3\u4e0d\u5bd2\u800c\u6817\u3002\uff08\u672c\u51b0\u5c71\u56fe\u53ea\u5206\u4eab\u4e2d\u56fd\u8457\u540d\u89c6\u9891\u5f39\u5e55\u7f51\u7ad9bilibili\u4e0a\u7684\u8be1\u5f02\u793e\u4ea4\u8d26\u53f7\uff09\nIn the vast expanse of the Chinese internet, there exist certain social media accounts that consistently publish perplexing, eerie, and even surreal content. This material may originate from the creators\u2019 mischievous humor, spontaneous whimsy, or perhaps a form of deliberately orchestrated performance art or narrative experimentation. The motivations behind these accounts often evoke curiosity, confusion, and at times, a distinct sense of unease among viewers.(This iceberg diagram specifically showcases peculiar social accounts found on the Chinese video platform Bilibili.)\n\n\uff08\u6ce8\uff1a\n\n\u672c\u51b0\u5c71\u56fe\u4f9d\u636e\u8d26\u53f7\u70ed\u5ea6\u8fdb\u884c\u5206\u7c7b\uff0c\u5404\u5c42\u7ea7\u5185\u90e8\u6392\u540d\u4e0d\u5206\u5148\u540e\uff0c\u70ed\u5ea6\u6570\u636e\u66f4\u65b0\u81f39\u67086\u65e5\uff1b\n\n\u5185\u5bb9\u62bd\u8c61\u5e76\u4e0d\u4ee3\u8868\u8d28\u91cf\u4f4e\u4e0b\uff0c\u672c\u56fe\u4ec5\u6536\u5f55\u672c\u4eba\u4e3b\u89c2\u8ba4\u5b9a\u7684\u201c\u8be1\u5f02\u98ce\u683c\u201d\u8d26\u53f7\uff0c\u8bf7\u52ff\u501f\u6b64\u653b\u51fb\u521b\u4f5c\u8005\u672c\u4eba\uff1b\n\n\u672c\u56fe\u4ec5\u7b5b\u9009\u4ee5\u539f\u521b\u5185\u5bb9\u4e3a\u4e3b\u7684\u8d26\u53f7\uff0c\u8bb8\u591a\u642c\u8fd0\u7c7b\u8d26\u53f7\u867d\u5185\u5bb9\u730e\u5947\u4f46\u56e0\u6027\u8d28\u4e0d\u7b26\u672a\u88ab\u7eb3\u5165\uff1b\n\n\u56e0\u4e2a\u4eba\u7cbe\u529b\u4e0e\u68c0\u7d22\u80fd\u529b\u6709\u9650\uff0c\u672c\u56fe\u4ec5\u4e3a\u90e8\u5206\u6536\u5f55\uff0c\u65e2\u4e0d\u5b8c\u6574\u4e5f\u975e\u5ba2\u89c2\u8bc4\u4ef7\uff0c\u4ec5\u4f9b\u4e2a\u4eba\u5174\u8da3\u6574\u7406\uff1b\n\n\u6536\u5f55\u4e0e\u5426\u4e0d\u4ee3\u8868\u5bf9\u8d26\u53f7\u7684\u6b63\u9762\u6216\u8d1f\u9762\u8bc4\u4ef7\uff0c\u4ea6\u65e0\u4efb\u4f55\u5546\u4e1a\u6216\u6279\u5224\u76ee\u7684\uff0c\u656c\u8bf7\u7406\u6027\u770b\u5f85\uff1b\n\n\u4e25\u7981\u4efb\u4f55\u5f62\u5f0f\u7684\u4e0d\u5f53\u89e3\u8bfb\u3001\u6076\u610f\u8f6c\u8f7d\u6216\u5bf9\u56fe\u4e2d\u63d0\u53ca\u8d26\u53f7\u7684\u9a9a\u6270\u884c\u4e3a\uff1b\n\n\u672c\u56fe\u4ec5\u4f9b\u4e92\u8054\u7f51\u6587\u5316\u8ba8\u8bba\u4e0e\u7814\u7a76\u53c2\u8003\uff0c\u8bf7\u52ff\u7528\u4e8e\u4e89\u8bae\u6027\u6216\u653b\u51fb\u6027\u7528\u9014\uff1b\n\n\u6700\u7ec8\u89e3\u91ca\u6743\u5f52\u6574\u7406\u8005\u6240\u6709\uff0c\u5982\u6709\u4fb5\u6743\u6216\u5f02\u8bae\u8bf7\u8054\u7cfb\u5220\u9664\u3002\uff09\n(Note:\n\nThis iceberg chart categorizes accounts based on their popularity metrics. Rankings within each tier are in no particular order, and all popularity data is updated as of September 6.\n\nAbstract or unconventional content does not imply low quality. This chart includes only accounts that I personally consider to be of \"eerie or unconventional style.\" Please do not use this chart to attack or harass the creators.\n\nOnly accounts primarily producing original content are included. Although many repost accounts may also feature bizarre content, they are excluded due to their non-original nature.\n\nDue to limited time and research capabilities, this chart is neither complete nor objective. It is compiled purely based on personal interest.\n\nInclusion or exclusion does not represent a positive or negative evaluation of any account, nor does it serve any commercial or critical purpose. Please view this chart rationally.\n\nAny form of misinterpretation, malicious redistribution, or harassment toward the accounts mentioned herein is strictly prohibited.\n\nThis chart is intended solely for cultural discussion and academic reference within the internet community. It should not be used for controversial or offensive purposes.\n\nThe right of final interpretation belongs to the compiler. If you believe any content infringes upon your rights or have any objections, please contact us for removal.)\n\n\u4f5c\u8005B\u7ad9\u4e3b\u9875\uff08Author\u0027s Bilibili Homepage\uff09\uff1ahttps://space.bilibili.com/3493115014941043?spm_id_from=333.337.0.0\n\n\nqq\u4ea4\u6d41\u7fa4:334101307\n\n", "disablecomments": null, "editdescriptions": false, "editlinks": true, "editsettings": {"advancedentries": true, "advancedimages": true, "advancedlevels": false, "advancedothers": false, "editcategories": true, "editdeco": false, "editfont": false, "editsubcategories": false}, "explainers": [], "fixnsfw": null, "fixpublic": null, "font": "arial", "fontcolor": "white", "fontdeco": true, "fontsize": "100%", "fontweight": "700", "hidedate": null, "hidefooter": false, "hidenumentries": false, "hidetitle": false, "highlightalpha": null, "highlightcolor": null, "highlightrgba": "rgba(220,220,0,1)", "highlightupdated": true, "icons": ["\u003e95% links", "\u003e200 entries", "has categories"], "lang": "zh", "lastedit": "1758622790.99637", "layout": "shuffled", "levels": [{"active": false, "background": "template_default_background_7.jpg", "content": [], "name": "", "sidebackground": "template_default_background_7.jpg"}, {"active": true, "background": "template_elementy_background_0.png", "collapse": false, "content": [{"category": "\u6897", "description": "", "link": "https://space.bilibili.com/1146388214?spm_id_from=333.337.0.0", "name": "Aleks_Kost", "updated": 1757157669.5901232}, {"category": "\u753b\u753b", "description": "", "link": "https://space.bilibili.com/698537200?spm_id_from=333.337.0.0", "name": "Mastertingus", "updated": 1757157430.871656}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/694525758?spm_id_from=333.337.0.0", "name": "Sunny_L_", "updated": 1757157721.5633135}, {"category": "\u8d5b\u9a6c\u5a18\u76f8\u5173", "description": "", "link": "https://space.bilibili.com/431579907?spm_id_from=333.337.0.0", "name": "\u4e00\u6839\u534e\u4ed4", "updated": 1757157492.8090196}, {"category": "\u6897", "description": "", "link": "https://space.bilibili.com/313669086?spm_id_from=333.337.0.0", "name": "\u4e8c\u6b21\u5143\u5200\u9171\u4e00\u5200\u54e5", "updated": 1757174888.028086}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/498957850?spm_id_from=333.337.0.0", "name": "\u52c7\u6562\u54e5\u7279", "updated": 1757157597.3664887}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/71159799?spm_id_from=333.337.0.0", "name": "\u53ef\u7231\u7684\u56e2\u957fl", "updated": 1757157585.2371702}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/475845053?spm_id_from=333.337.0.0", "name": "\u5471\u5527\u541b", "updated": 1757157466.613799}, {"category": "ai", "description": "", "link": "https://space.bilibili.com/25329626?spm_id_from=333.337.0.0", "name": "\u54aa\u514b\u83cc", "updated": 1757157400.8386786}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/174501086?spm_id_from=333.337.0.0", "name": "\u54d4\u54e9\u54d4\u54e9\u4f1a\u5458\u8d2d", "updated": 1757157735.1428664}, {"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/57214324?spm_id_from=333.337.0.0", "name": "\u5c0f\u8283\u8def\u5b50\u91ce", "updated": 1757226069.4408984}, {"category": "\u7f8e\u98df", "description": "", "link": "https://space.bilibili.com/3493077696121618?spm_id_from=333.337.0.0", "name": "\u5f20\u5723\u53f9Yo", "updated": 1757157708.3221066}, {"category": "\u6211\u7684\u4e16\u754c\uff0c\u8ff7\u4f60\u4e16\u754c", "description": "", "link": "https://space.bilibili.com/20669779?spm_id_from=333.337.0.0", "name": "\u6572\u840c\u8c79\u98ce\u5802", "updated": 1757157630.3582275}, {"category": "\u6211\u7684\u4e16\u754c\uff0c\u8ff7\u4f60\u4e16\u754c", "description": "", "link": "https://space.bilibili.com/272279136?spm_id_from=333.337.0.0", "name": "\u6587\u6587DADA", "updated": 1757157655.3550084}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/3546570481994608?spm_id_from=333.337.0.0", "name": "\u68b5\u8475\u8475", "updated": 1757157644.468684}, {"category": "\u914d\u97f3", "description": "", "link": "https://space.bilibili.com/3493118460561869?spm_id_from=333.337.0.0", "name": "\u6c5f\u80a5\u80a0", "updated": 1757157527.3774579}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/8034163?spm_id_from=333.337.0.0", "name": "\u6d45\u6f84\u6708", "updated": 1757157505.73034}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/295993972?spm_id_from=333.337.0.0", "name": "\u7231\u9f13\u6363\u7684\u90a2\u5fd7\u78ca", "updated": 1757157448.3233604}, {"category": "\u6897", "description": "", "link": "https://space.bilibili.com/477676711?spm_id_from=333.337.0.0", "name": "\u7530\u4e00\u540dsir", "updated": 1757157517.0211933}, {"category": "\u6211\u7684\u4e16\u754c\uff0c\u8ff7\u4f60\u4e16\u754c", "description": "", "link": "https://space.bilibili.com/289475254?spm_id_from=333.337.0.0", "name": "\u78a7\u6708\u72d0", "updated": 1757157381.294363}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/641217?spm_id_from=333.337.0.0", "name": "\u7b2c\u4e03\u7ffc\u5200", "updated": 1757157683.278138}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/388477943?spm_id_from=333.337.0.0", "name": "\u85aa\u513f\u59d0\u5e08\u5c0a", "updated": 1757157360.0019746}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/346158657?spm_id_from=333.337.0.0", "name": "\u8d85\u7231\u73a9\u7684\u5c0f\u51e1\u51e1", "updated": 1757157696.0913498}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/478610686?spm_id_from=333.337.0.0", "name": "\u90d1\u51ef\u4f26\u4f26\u4f26", "updated": 1757157415.3604262}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/482213447?spm_id_from=333.337.0.0", "name": "\u95ea\u7535\u4fa0-flash", "updated": 1757157480.0040267}], "description": "\u9ad8\u4e86", "name": "\u666e\u7f57\u5927\u4f17", "proposals": [], "sidebackground": "template_1_s_1.png"}, {"active": true, "background": "template_elementy_background_1.png", "collapse": false, "content": [{"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/3546697410021598?spm_id_from=333.337.0.0", "name": "-\u963f\u8fea\u554a\u963f\u8fea-", "updated": 1757158069.9098217}, {"category": "\u6211\u7684\u4e16\u754c\uff0c\u8ff7\u4f60\u4e16\u754c", "description": "", "link": "https://space.bilibili.com/189841470?spm_id_from=333.337.0.0", "name": "Mr_\u725b\u5976", "updated": 1757158712.2219956}, {"category": "\u97f3\u4e50", "description": "", "link": "https://space.bilibili.com/550445292?spm_id_from=333.337.0.0", "name": "peach63", "updated": 1757174965.1468484}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/3546872622877434?spm_id_from=333.337.0.0", "name": "\u4e09\u70b9\u534a\u5b98\u65b9", "updated": 1757157766.5587225}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/393091539?spm_id_from=333.337.0.0", "name": "\u4e09\u89d2\u6d32\u7ecf\u6d4e\u5b66\u6559\u7236", "updated": 1757158132.1008189}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/624708064?spm_id_from=333.337.0.0", "name": "\u4e09\u91d1\u554aGC", "updated": 1757157796.6415622}, {"category": "\u7f8e\u98df", "description": "", "link": "https://space.bilibili.com/1205045754?spm_id_from=333.337.search-card.all.click", "name": "\u4e0d\u4fe1\u90aa\u7684\u65af\u5766", "updated": 1757393535.534761}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/404200804?spm_id_from=333.337.0.0", "name": "\u4fca\u660e\u738b\u5b50i", "updated": 1757174642.382517}, {"category": "\u6897", "description": "", "link": "https://space.bilibili.com/457857973?spm_id_from=333.337.0.0", "name": "\u5f71\u6d41\u4e4b\u4e3b1", "updated": 1757158104.6692848}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/4191359?spm_id_from=333.337.0.0", "name": "\u67e5\u7406\u8e66\u8e66", "updated": 1757157746.95868}, {"category": "\u914d\u97f3", "description": "", "link": "https://space.bilibili.com/177743393?spm_id_from=333.337.0.0", "name": "\u7231\u5403\u53c8-", "updated": 1757825706.369169}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/1751665789?spm_id_from=333.337.0.0", "name": "\u7231\u5b66\u4e60\u7684\u8d56\u67d0", "updated": 1757224487.8869562}, {"category": "\u753b\u753b", "description": "", "link": "https://space.bilibili.com/384914505?spm_id_from=333.337.0.0", "name": "\u7396\u513f\u7231\u753b\u753b", "updated": 1757157778.1589668}, {"category": "\u6211\u7684\u4e16\u754c\uff0c\u8ff7\u4f60\u4e16\u754c", "description": "", "link": "https://space.bilibili.com/454557163?spm_id_from=333.337.0.0", "name": "\u7a3d\u6728\u767d\u67cfcypress", "updated": 1757223904.5604372}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/19550011?spm_id_from=333.337.0.0", "name": "\u7ae0\u9c7c\u54e5\u6cbb\u6108\u9986", "updated": 1757224400.3340955}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/363932468?spm_id_from=333.337.0.0", "name": "\u804c\u4e1a\u9003\u8dd1", "updated": 1757158089.0294735}, {"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/3546658642070330?spm_id_from=333.337.0.0", "name": "\u9752\u51e1\u52a8\u753b\u57ce", "updated": 1757224357.701722}], "description": "\u4f4e\u4e86", "name": "\u666e\u7f57\u5c0f\u4f17", "sidebackground": "template_1_s_2.png"}, {"active": true, "background": "template_elementy_background_2.png", "collapse": false, "content": [{"category": "\u753b\u753b", "description": "", "link": "https://space.bilibili.com/3626348?spm_id_from=333.337.0.0", "name": "4\u59d0\u5c0f\u7f8a", "updated": 1757158892.6577482}, {"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/1430426144?spm_id_from=333.337.0.0", "name": "12Fun\u8ff7\u56e0", "updated": 1757158240.8066745}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/1810327105?spm_id_from=333.337.0.0", "name": "Eurus-\u7834\u8f66\u5317\u4f10", "updated": 1757158907.7429984}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/90366790/?spm_id_from=333.788.upinfo.detail.click", "name": "JJboys_ ", "updated": 1757391474.5872402}, {"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/6673977?spm_id_from=333.337.0.0", "name": "MRZJL", "updated": 1757158169.564487}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/395894900?spm_id_from=333.337.0.0", "name": "Sunny_Duck", "updated": 1757174711.4726424}, {"category": "\u6211\u7684\u4e16\u754c\uff0c\u8ff7\u4f60\u4e16\u754c", "description": "", "link": "https://space.bilibili.com/3546580133087868?spm_id_from=333.337.search-card.all.click", "name": "TNT\u4e36mc\u73a9\u5bb6", "updated": 1757226424.997458}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/1060088049?spm_id_from=333.337.0.0", "name": "Wcats_\u559d\u6c34", "updated": 1757158275.60298}, {"category": "\u97f3\u4e50", "description": "", "link": "https://space.bilibili.com/7761588?spm_id_from=333.337.0.0", "name": "_Karasu_", "updated": 1757224318.6320055}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3546841828296748?spm_id_from=333.337.0.0", "name": "bro\u6765\u8d22", "updated": 1757159721.671798}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/3546725966940259?spm_id_from=333.337.0.0", "name": "b\u65b9\u4e5f", "updated": 1757174846.367706}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/487449?spm_id_from=333.337.0.0", "name": "lerlot\u7206\u68da\u6851", "updated": 1757224066.7352016}, {"category": "\u8d5b\u9a6c\u5a18\u76f8\u5173", "description": "", "link": "https://space.bilibili.com/16381701?spm_id_from=333.337.0.0", "name": "poimiku\u4e0d\u662f\u7b28\u6bd4", "updated": 1757158782.8246074}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/3546607068908344?spm_id_from=333.337.0.0", "name": "\u4e00\u4e2a\u88e4\u8869\u98de\u98de\u98de\u4eba", "updated": 1757158942.9485614}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/3546609308666368?spm_id_from=333.337.0.0", "name": "\u4e91\u541e\u795e", "updated": 1757159446.1406784}, {"category": "\u4e8c\u6b21\u5143\u76f8\u5173(\u52a8\u6f2b\uff0c\u4e8c\u6e38...)", "description": "", "link": "https://space.bilibili.com/12488618?spm_id_from=333.337.0.0", "name": "\u4ea4\u6613\u5931\u8d25\u7684\u83ca\u83ca", "updated": 1757223349.336806}, {"category": "\u4e8c\u6b21\u5143\u76f8\u5173(\u52a8\u6f2b\uff0c\u4e8c\u6e38...)", "description": "", "link": "https://space.bilibili.com/3546688887196499?spm_id_from=333.337.0.0", "name": "\u4f18\u9999\u306e\u7231\u5403\u8bfa\u4e9a", "updated": 1757158253.9273062}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/3078999?spm_id_from=333.337.0.0", "name": "\u4f9d\u54c8", "updated": 1757158998.6298623}, {"category": "\u7f8e\u98df", "description": "", "link": "https://space.bilibili.com/3461565823060932?spm_id_from=333.337.0.0", "name": "\u516d\u8fb9\u5f62\u6218\u58eb-\u6653\u5cf0", "updated": 1757158159.1033003}, {"category": "\u4e8c\u6b21\u5143\u76f8\u5173(\u52a8\u6f2b\uff0c\u4e8c\u6e38...)", "description": "", "link": "https://space.bilibili.com/3546385563519110?spm_id_from=333.337.0.0", "name": "\u51b7\u5e7d\u65e0\u5398\u5934", "updated": 1757174473.2089996}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/648916791?spm_id_from=333.337.0.0", "name": "\u5361\u5e93\u8fea\u4e9a\u6700\u540e\u7684\u5e0c\u671b", "updated": 1757224634.9656663}, {"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/526982452?spm_id_from=333.337.0.0", "name": "\u594b\u6597\u5427\u718a\u5377", "updated": 1757225637.7371693}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/3546684376222422?spm_id_from=333.337.0.0", "name": "\u59da\u671b\u53f0\u7403", "updated": 1757158765.4361038}, {"category": "\u914d\u97f3", "description": "", "link": "https://space.bilibili.com/518720019?spm_id_from=333.337.0.0", "name": "\u5b89\u6851\u4e0d\u4f24", "updated": 1757158147.4383159}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/450719996?spm_id_from=333.337.0.0", "name": "\u5c0fc\u6e38\u620f", "updated": 1757159092.4657233}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/3546387746654910?spm_id_from=333.337.0.0", "name": "\u5c0f\u6c14\u7403\u5a31\u4e50", "updated": 1757158930.1255243}, {"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/50610026?spm_id_from=333.337.0.0", "name": "\u5c0f\u7c73\u52a8\u753b", "updated": 1757159143.7857144}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/478720594?spm_id_from=333.337.0.0", "name": "\u5c11\u5403\u70b9\u5e03\u6d1b\u82ac", "updated": 1757158751.8126078}, {"category": "\u4e8c\u6b21\u5143\u76f8\u5173(\u52a8\u6f2b\uff0c\u4e8c\u6e38...)", "description": "", "link": "https://space.bilibili.com/164944595?spm_id_from=333.337.0.0", "name": "\u5c71\u95f4\u91ce\u9e21\u4ed9\u75f4", "updated": 1757225990.8948333}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/3546695988152467?spm_id_from=333.337.0.0", "name": "\u5e72\u762a\u718a", "updated": 1757174607.9407468}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/3493295307098539?spm_id_from=333.337.0.0", "name": "\u5f00\u5fc3\u306eF-", "updated": 1757158203.9320917}, {"category": "\u753b\u753b", "description": "", "link": "https://space.bilibili.com/89646480?spm_id_from=333.337.0.0", "name": "\u602a\u5947\u56fe\u9274", "updated": 1757158295.543686}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/1179637796?spm_id_from=333.337.0.0", "name": "\u6167\u6167\u9971\u9971\u5440", "updated": 1757159078.7612596}, {"category": "ai", "description": "", "link": "https://space.bilibili.com/3546921513782109?spm_id_from=333.337.0.0", "name": "\u6211\u662f\u4e03\u5947", "updated": 1757158181.0095723}, {"category": "\u97f3\u4e50", "description": "", "link": "https://space.bilibili.com/88936293?spm_id_from=333.337.0.0", "name": "\u6211\u662f\u8bda\u6b4c", "updated": 1757158319.809438}, {"category": "\u6211\u7684\u4e16\u754c\uff0c\u8ff7\u4f60\u4e16\u754c", "description": "", "link": "https://space.bilibili.com/3546677700987033?spm_id_from=333.337.0.0", "name": "\u6211\u7684\u4e16\u754c_\u53f2\u8482\u592b", "updated": 1757158805.9762027}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/3546899950864647?spm_id_from=333.337.0.0", "name": "\u6211\u8981\u7761\u89c9-1589", "updated": 1757174570.0771356}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/3546926444185812?spm_id_from=333.337.0.0", "name": "\u6297\u6e05\u5927\u5c06\u6148\u79a7", "updated": 1757166899.225717}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/628259704?spm_id_from=333.337.0.0", "name": "\u6614\u5e74Emot", "updated": 1757159272.0296543}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/2053912388?spm_id_from=333.337.0.0", "name": "\u662f\u6c5f\u5929\u5440", "updated": 1757225208.37038}, {"category": "\u914d\u97f3", "description": "", "link": "https://space.bilibili.com/3546694801165138?spm_id_from=333.337.0.0", "name": "\u6709\u83dc\u8001\u5e08\u54c8", "updated": 1757158728.3210344}, {"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/8918982?spm_id_from=333.337.0.0", "name": "\u673a\u5de7\u7ec5\u58eb\u4e0d\u4f1a\u53d7\u4f24w", "updated": 1757159255.4406857}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/3546751074044796", "name": "\u6742\u5b66-\u6c64\u65e5\u4ed9", "updated": 1757159009.8065417}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/1253755578?spm_id_from=333.337.0.0", "name": "\u6b66\u677e\u4f7f\u547d\u53ec\u5524", "updated": 1757158974.7299674}, {"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/96245669?spm_id_from=333.337.0.0", "name": "\u6d3e\u4e4b\u65b0", "updated": 1757159491.7822418}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3546706184506155?spm_id_from=333.337.search-card.all.click", "name": "\u7528\u62372\u70b90\u8001\u5e08", "updated": 1757159241.69819}, {"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/1709791878?spm_id_from=333.337.0.0", "name": "\u76ae\u964c\u6da9\u62c9", "updated": 1757159121.497002}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/487144500?spm_id_from=333.337.0.0", "name": "\u7bee\u7403\u626f\u6de1\u5c40", "updated": 1757158918.7634487}, {"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/1565383821?spm_id_from=333.337.0.0", "name": "\u7eff\u6cb9\u6cb9\u52a8\u753b\u57ce", "updated": 1757225247.6148639}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/476728345?spm_id_from=333.337.0.0", "name": "\u80a5\u9e21\u7172", "updated": 1757225545.5627487}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/1845329186?spm_id_from=333.337.0.0", "name": "\u82cfSuker", "updated": 1757158986.0202184}, {"category": "\u5c0f\u8bf4", "description": "", "link": "https://space.bilibili.com/3546565165713735?spm_id_from=333.337.0.0", "name": "\u83e0\u841d\u58a9\u5b50-\u5802\u5802\u590d\u6d3b\u7248-", "updated": 1757158879.930521}, {"category": "\u6211\u7684\u4e16\u754c\uff0c\u8ff7\u4f60\u4e16\u754c", "description": "", "link": "https://space.bilibili.com/325813650/?spm_id_from=333.788.upinfo.detail.click", "name": "\u84dd\u8393\u5473\u54d2happy", "updated": 1757392697.045612}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/431863666?spm_id_from=333.337.0.0", "name": "\u868a\u5c0f\u4e5der", "updated": 1757174805.4529712}, {"category": "\u6211\u7684\u4e16\u754c\uff0c\u8ff7\u4f60\u4e16\u754c", "description": "", "link": "https://space.bilibili.com/3493113479825578?spm_id_from=333.337.0.0", "name": "\u8ff7\u4f60\u4e16\u754c-\u62c6", "updated": 1757225519.5144856}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/1939928406?spm_id_from=333.337.search-card.all.click", "name": "\u90fd\u597d\u6837\u7684", "updated": 1757159046.106754}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/1874008795?spm_id_from=333.337.0.0", "name": "\u9178\u9e21\u5927\u738b91", "updated": 1757159133.30311}, {"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/1071498861?spm_id_from=333.337.0.0", "name": "\u91c7\u8d1d\u52a8\u753b\u6559\u5b66", "updated": 1757158191.9212022}, {"category": "\u4e8c\u6b21\u5143\u76f8\u5173(\u52a8\u6f2b\uff0c\u4e8c\u6e38...)", "description": "", "link": "https://space.bilibili.com/3546560220629195?spm_id_from=333.337.0.0", "name": "\u9632\u50bb\u8d34\u58eb", "updated": 1757158264.4696758}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/2091449956?spm_id_from=333.337.0.0", "name": "\u963f\u7f57\u597d\u5e05\u5440", "updated": 1757174433.0720582}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/233703364?spm_id_from=333.337.0.0", "name": "\u9648\u52b3\u677f", "updated": 1757158964.8201735}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/524974688?spm_id_from=333.337.0.0", "name": "\u9648\u6797\u591507", "updated": 1757158214.9303453}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3546923818551845?spm_id_from=333.337.0.0", "name": "\u9a6c\u56fd\u6210\u5bfc\u6f14", "updated": 1757158285.567374}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/3493104806004934?spm_id_from=333.337.0.0", "name": "\u9ec4\u8001\u677f0824", "updated": 1757159110.6255412}, {"category": "\u7f8e\u98df", "description": "", "link": "https://space.bilibili.com/3546720654855118?spm_id_from=333.337.search-card.all.click", "name": "\u9171\u603b\u5bb6\u7684\u5c71\u6751\u7f8e\u5473", "updated": 1758552036.8459563}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/473718569?spm_id_from=333.337.0.0", "name": "\u6797\u93e1\u5fb7DM67\u5fb7\u99ac\u7532\u9aa8\u6587", "updated": 1758552275.8739874}], "description": "\u4f4e\u4e86\uff08", "name": "\u6c89\u6d78\u5728\u81ea\u5df1\u7684\u827a\u672f\u91cc", "proposals": [], "sidebackground": "template_1_s_3.png"}, {"active": true, "background": "template_elementy_background_3.png", "collapse": false, "content": [{"category": "\u97f3\u4e50", "description": "", "link": "https://space.bilibili.com/701632970?spm_id_from=333.337.0.0", "name": "468162", "updated": 1757163510.1330855}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/46266155?spm_id_from=333.337.0.0", "name": "-Jieni\u6770\u5c3c", "updated": 1757164647.4948156}, {"category": "\u753b\u753b", "description": "", "link": "https://space.bilibili.com/511623553?spm_id_from=333.337.0.0", "name": "Any\u65e0\u673a", "updated": 1757163649.7293868}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/340419584?spm_id_from=333.337.0.0", "name": "DZ\u5e26\u8bd7\u4eba", "updated": 1757226585.6225908}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/1964576608?spm_id_from=333.337.0.0", "name": "Enchantmentkevin", "updated": 1757165372.3890576}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/350916063?spm_id_from=333.337.0.0", "name": "Fluorescence_-", "updated": 1757164738.7855377}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/516384544?spm_id_from=333.337.0.0", "name": "HAAVK\u7f57\u7c73\u4fee\u65af\u535a\u58eb", "updated": 1757163908.802976}, {"category": "\u753b\u753b", "description": "", "link": "https://space.bilibili.com/3493127637698768?spm_id_from=333.337.0.0", "name": "IMEAHEART", "updated": 1757163522.2543197}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/434631201?spm_id_from=333.337.0.0", "name": "I\u626b\u7f57I", "updated": 1757224185.7211688}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/393701239?spm_id_from=333.337.0.0", "name": "MIFFOR\u6f2b\u526a", "updated": 1757393464.5267992}, {"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/298198983?spm_id_from=333.337.0.0", "name": "Moon\u4e36\u6708\u5f71", "updated": 1757159760.0116181}, {"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/2124338469?spm_id_from=333.337.0.0", "name": "XR\u63a2\u6848\u7cfb\u5217", "updated": 1757159893.1824555}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/3546801929980498?spm_id_from=333.337.0.0", "name": "cc\u5f20\u6587\u701a", "updated": 1757159964.7647069}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/3494373119494756?spm_id_from=333.337.0.0", "name": "itsboiJOE", "updated": 1757165325.2887318}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3546937145952746?spm_id_from=333.337.0.0", "name": "mayAhmay", "updated": 1757225778.7155976}, {"category": "\u6211\u7684\u4e16\u754c\uff0c\u8ff7\u4f60\u4e16\u754c", "description": "", "link": "https://space.bilibili.com/3546831258651103?spm_id_from=333.337.0.0", "name": "messager_mc", "updated": 1757165348.0307074}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/1315605081?spm_id_from=333.337.0.0", "name": "rsK7034", "updated": 1757225811.989424}, {"category": "\u753b\u753b", "description": "", "link": "https://space.bilibili.com/1967476244?spm_id_from=333.337.0.0", "name": "sickking12", "updated": 1757159905.1407976}, {"category": "\u4e8c\u6b21\u5143\u76f8\u5173(\u52a8\u6f2b\uff0c\u4e8c\u6e38...)", "description": "", "link": "https://space.bilibili.com/370871812?spm_id_from=333.337.0.0", "name": "sparkle0822", "updated": 1757159952.0134017}, {"category": "\u4e8c\u6b21\u5143\u76f8\u5173(\u52a8\u6f2b\uff0c\u4e8c\u6e38...)", "description": "", "link": "https://space.bilibili.com/3546670757317257?spm_id_from=333.337.0.0", "name": "user\u672a\u547d\u540d", "updated": 1757164427.2558296}, {"category": "\u5c11\u5973\u4e50\u961f\u76f8\u5173(gbc\uff0cmygo...)", "description": "", "link": "https://space.bilibili.com/506013827?spm_id_from=333.337.0.0", "name": "\u4e00\u4e2a\u4e2d\u4e8c\u7684\u4eba\u673a", "updated": 1757159803.9366186}, {"category": "\u914d\u97f3", "description": "", "link": "https://space.bilibili.com/3546725337794868/upload/video", "name": "\u4e00\u53ea\u8be1\u5f02", "updated": 1757164342.6270478}, {"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/3546835536840929?spm_id_from=333.337.0.0", "name": "\u4e00\u6c34\u732b", "updated": 1757164619.4898784}, {"category": "\u97f3\u4e50", "description": "", "link": "https://space.bilibili.com/104396901?spm_id_from=333.337.0.0", "name": "\u4e0a\u4e0a-Agate", "updated": 1757163431.4169085}, {"category": "\u914d\u97f3", "description": "", "link": "https://space.bilibili.com/2020937946?spm_id_from=333.337.0.0", "name": "\u4e45\u58f9\u9a6c\u5148\u751f_\u6069\u5e08\u98de\u4eba", "updated": 1757164254.979086}, {"category": "ai", "description": "", "link": "https://space.bilibili.com/661751086?spm_id_from=333.337.0.0", "name": "\u4e54\u68a6\u598du", "updated": 1757163472.3373218}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3493105376430860?spm_id_from=333.337.0.0", "name": "\u4e94\u6bd2\u5be8\u4e3b", "updated": 1757159692.1661005}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/3546892833130862?spm_id_from=333.337.0.0", "name": "\u4ed4\u4ed4\u634f\u634f\u4e50", "updated": 1757163741.2539284}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/500335275?spm_id_from=333.337.0.0", "name": "\u4f50\u5ddd\u7802\u8f6e", "updated": 1757164126.8855798}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3546919058016521?spm_id_from=333.337.0.0", "name": "\u4f55\u59d0HJ", "updated": 1757163842.8360023}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/481481551?spm_id_from=333.337.0.0", "name": "\u5185\u8499\u53e4\u4e3d\u54e5-\u7231\u7814\u7a76", "updated": 1757163442.6498952}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3546949733059258?spm_id_from=333.337.0.0", "name": "\u519c\u6751\u5f20\u7237\u7237", "updated": 1757171092.8534915}, {"category": "\u5c11\u5973\u4e50\u961f\u76f8\u5173(gbc\uff0cmygo...)", "description": "", "link": "https://space.bilibili.com/12429295?spm_id_from=333.337.0.0", "name": "\u51c9\u51c9\u51c9official", "updated": 1757159817.149402}, {"category": "\u4e8c\u6b21\u5143\u76f8\u5173(\u52a8\u6f2b\uff0c\u4e8c\u6e38...)", "description": "", "link": "https://space.bilibili.com/527057322?spm_id_from=333.337.0.0", "name": "\u5341\u516d\u591c\u785d\u591c", "updated": 1757172532.5929832}, {"category": "\u914d\u97f3", "description": "", "link": "https://space.bilibili.com/220051309?spm_id_from=333.337.0.0", "name": "\u5351\u8d31\u7684\u4f4e\u7ea7\u519c\u77ff\u4ea7\u54c1", "updated": 1757159790.8857183}, {"category": "\u914d\u97f3", "description": "", "link": "https://space.bilibili.com/87895935?spm_id_from=333.337.0.0", "name": "\u53e3\u888b\u91cc\u6709\u5996\u6c14", "updated": 1757225592.8758068}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/1158497360?spm_id_from=333.337.0.0", "name": "\u5409\u6069\u54e5\u54e5", "updated": 1757164236.4389217}, {"category": "\u6897", "description": "", "link": "https://space.bilibili.com/3493260838308804?spm_id_from=333.337.0.0", "name": "\u541b\u54e5\u68a6\u60f3\u6ca1\u4e86", "updated": 1757163348.1757197}, {"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/1215676946?spm_id_from=333.337.0.0", "name": "\u54c7\u8884_wao", "updated": 1757225710.981564}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/193390951?spm_id_from=333.337.0.0", "name": "\u54c8\u592b\u514b\u96c6\u56e2\u516c\u5173\u90e8\u90e8\u957f", "updated": 1757163894.0058212}, {"category": "ai", "description": "", "link": "https://space.bilibili.com/1612133432?spm_id_from=333.337.0.0", "name": "\u5520\u5520\u8db4\u63a2\u79d8", "updated": 1757164166.7684495}, {"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/3546835872385797?spm_id_from=333.337.0.0", "name": "\u5543\u5f1f", "updated": 1757223977.385854}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/452515010?spm_id_from=333.337.0.0", "name": "\u5609\u797a\u653e\u6620\u5ba4", "updated": 1757224748.6215193}, {"category": "ai", "description": "", "link": "https://space.bilibili.com/1778849933?spm_id_from=333.337.0.0", "name": "\u56fd\u5916\u5c71\u6d77\u7cbe", "updated": 1757163499.3203735}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/403787951?spm_id_from=333.337.0.0", "name": "\u5764\u4e7e\u9053\u4eba", "updated": 1757223816.3005254}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/268120490?spm_id_from=333.337.0.0", "name": "\u590f\u76ee\u6e1a\u79be\u53e3", "updated": 1757223385.3988693}, {"category": "\u7f8e\u98df", "description": "", "link": "https://space.bilibili.com/494203381?spm_id_from=333.337.0.0", "name": "\u5927\u6d77\u5e26\u4f60\u5df4\u6db2\u559d\u91cc", "updated": 1757165062.258813}, {"category": "\u4e8c\u6b21\u5143\u76f8\u5173(\u52a8\u6f2b\uff0c\u4e8c\u6e38...)", "description": "", "link": "https://space.bilibili.com/3546658577057876?spm_id_from=333.337.0.0", "name": "\u5927\u806a\u660e\u5b50\u58a8", "updated": 1757174354.5122352}, {"category": "\u7f8e\u98df", "description": "", "link": "https://space.bilibili.com/442103193?spm_id_from=333.337.0.0", "name": "\u5965\u591a\u7f8e\u98df", "updated": 1757165077.4977188}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/489195681?spm_id_from=333.337.search-card.all.click", "name": "\u5b50\u732b\u3061\u3083\u3093__", "updated": 1757159647.3906212}, {"category": "ai", "description": "", "link": "https://space.bilibili.com/3546376363313267?spm_id_from=333.337.0.0", "name": "\u5c0f\u5b5f\u541b\u4e0d\u4e58", "updated": 1757159610.9980533}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/692981348?spm_id_from=333.337.0.0", "name": "\u5c0f\u6d0b\u4ebaiii", "updated": 1757159916.4984262}, {"category": "\u5c11\u5973\u4e50\u961f\u76f8\u5173(gbc\uff0cmygo...)", "description": "", "link": "https://space.bilibili.com/65582571?spm_id_from=333.337.0.0", "name": "\u5ddd\u5d0e\u4ec1\u4ec1\u83dc", "updated": 1757159872.3745263}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/3546792150961019?spm_id_from=333.337.0.0", "name": "\u5eb7\u8fea-\u706b\u5f71\u5bfc\u5e08", "updated": 1757164389.181737}, {"category": "\u914d\u97f3", "description": "", "link": "https://space.bilibili.com/10853613?spm_id_from=333.337.0.0", "name": "\u5f35\u7693\u79b9-Skana", "updated": 1757164692.5184073}, {"category": "\u7f8e\u98df", "description": "", "link": "https://space.bilibili.com/1026224827?spm_id_from=333.337.0.0", "name": "\u6162\u534a\u62cd\u7684\u55b5yy", "updated": 1757159673.0344148}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/253125591?spm_id_from=333.337.0.0", "name": "\u620f\u7cbeJoe", "updated": 1757165416.4725213}, {"category": "\u4e8c\u6b21\u5143\u76f8\u5173(\u52a8\u6f2b\uff0c\u4e8c\u6e38...)", "description": "", "link": "https://space.bilibili.com/1499084355?spm_id_from=333.337.0.0", "name": "\u6211\u6ca1\u9b54\u828b\u723d", "updated": 1757174385.6612556}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/25772166?spm_id_from=333.337.0.0", "name": "\u65b0\u9171\u7231\u8ffd\u5267", "updated": 1757164374.4494991}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/3493287442778617?spm_id_from=333.337.0.0", "name": "\u6697\u533a\u65b9\u7a0b", "updated": 1757163972.413225}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/1795509080?spm_id_from=333.337.0.0", "name": "\u6797\u51b2\u6697\u533a\u7a81\u56f4", "updated": 1757163867.0666964}, {"category": "\u5c0f\u8bf4", "description": "", "link": "https://space.bilibili.com/1248772127?spm_id_from=333.337.0.0", "name": "\u6bd4\u683c\u8c22\u7279Bigshet", "updated": 1757224266.8539262}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/582167360?spm_id_from=333.337.0.0", "name": "\u6cd5\u56fd\u4eba\u8001\u5927", "updated": 1757163948.8600097}, {"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/3546583360604751?spm_id_from=333.337.0.0", "name": "\u6ce2\u5c14\u79d1\u666e", "updated": 1757163754.9205918}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/3546869470857535?spm_id_from=333.337.0.0", "name": "\u6d69\u6d69\u4ed9\u5b50", "updated": 1757159931.2429183}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/3546822024890749?spm_id_from=333.337.0.0", "name": "\u6db5\u6982", "updated": 1757163374.4766917}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/44662120?spm_id_from=333.337.0.0", "name": "\u6e38\u620f\u5927\u738b\u5c0f\u7eff", "updated": 1757163960.7512596}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/493192226?spm_id_from=333.337.0.0", "name": "\u7231\u4e0b\u86cb\u7684\u8001\u6bcd\u9e21", "updated": 1757174238.0113807}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/3546906147949306?spm_id_from=333.337.0.0", "name": "\u7231\u5403\u8fbe\u82ac\u797a", "updated": 1757174297.9990687}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/3461578112370783?spm_id_from=333.337.0.0", "name": "\u7231\u5fc3\u57ce\u5821\u674e", "updated": 1757223109.2481368}, {"category": "\u5c11\u5973\u4e50\u961f\u76f8\u5173(gbc\uff0cmygo...)", "description": "", "link": "https://space.bilibili.com/694624566?spm_id_from=333.337.0.0", "name": "\u7262\u8981\u7231\u4e50\u5948", "updated": 1757174252.5763443}, {"category": "ai", "description": "", "link": "https://space.bilibili.com/3546390697347404?spm_id_from=333.337.0.0", "name": "\u7262\u8bd7\u4eba", "updated": 1757164402.1709733}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/1753715431?spm_id_from=333.337.0.0", "name": "\u72d7\u5b50\u5feb\u4e50\u5c4b", "updated": 1757164711.195721}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/523950234?spm_id_from=333.337.0.0", "name": "\u72d7\u62f3\u8bf4\u7403", "updated": 1757163363.1147141}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/3546953122056913?spm_id_from=333.337.0.0", "name": "\u72d9\u51fb\u624bApex", "updated": 1757159661.358081}, {"category": "\u5c11\u5973\u4e50\u961f\u76f8\u5173(gbc\uff0cmygo...)", "description": "", "link": "https://space.bilibili.com/415351968?spm_id_from=333.337.0.0", "name": "\u738b\u6708\u76ee\u513f\u8349", "updated": 1757223410.351147}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/2007474425?spm_id_from=333.337.0.0", "name": "\u73a9\u6d1b\u514b\u7684\u4e50\u7ef4", "updated": 1757164441.2523112}, {"category": "\u753b\u753b", "description": "", "link": "https://space.bilibili.com/62083772?spm_id_from=333.337.0.0", "name": "\u73b0\u5728\u662f\u7eff\u706f", "updated": 1757163662.202077}, {"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/1424697801?spm_id_from=333.337.0.0", "name": "\u767d\u9a6c-\u62bd\u8c61\u827a\u4eba", "updated": 1757164658.776487}, {"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/41075508?spm_id_from=333.337.0.0", "name": "\u7684\u7684\u7684\u53f6", "updated": 1757163783.3346791}, {"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/3493258476914810?spm_id_from=333.337.0.0", "name": "\u79d1\u666e\u57083D", "updated": 1757223439.185623}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/178757758?spm_id_from=333.337.0.0", "name": "\u79e6\u738b-\u626b\u516d\u5408", "updated": 1757159583.8736134}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/3546847295572318?spm_id_from=333.337.0.0", "name": "\u7eb8\u7247\u9a6c\u529b\u6b27", "updated": 1757164214.791635}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/3546578868504891?spm_id_from=333.337.0.0", "name": "\u810f\u773c\u5c0f\u5267\u573a", "updated": 1757163937.7737474}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/493587865?spm_id_from=333.337.0.0", "name": "\u8111\u9171\u95f9\u95f9\u95f9\u95f9\u9171", "updated": 1757163727.873316}, {"category": "ai", "description": "", "link": "https://space.bilibili.com/3546851970124261?spm_id_from=333.337.0.0", "name": "\u81ed\u732b\u8ddf\u75af\u72d0\u72f8", "updated": 1757163769.538003}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/480768310?spm_id_from=333.337.search-card.all.click", "name": "\u82b1\u7f25\u7f08V", "updated": 1757163829.6516259}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/3546682908215987?spm_id_from=333.337.0.0", "name": "\u8521\u5c0f\u76ae\u672c\u4eba", "updated": 1757164415.4362094}, {"category": "\u6211\u7684\u4e16\u754c\uff0c\u8ff7\u4f60\u4e16\u754c", "description": "", "link": "https://space.bilibili.com/1628098195?spm_id_from=333.337.0.0", "name": "\u8ba9\u6211\u5eb7\u5eb7\u6d0b", "updated": 1757163882.1284015}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/1551134441?spm_id_from=333.337.0.0", "name": "\u8fea\u514b\u5361\u5609", "updated": 1757163854.9134066}, {"category": "\u6211\u7684\u4e16\u754c\uff0c\u8ff7\u4f60\u4e16\u754c", "description": "", "link": "https://space.bilibili.com/3546605795936356?spm_id_from=333.337.0.0", "name": "\u8ff7\u4f60\u4e16\u754c-\u5c0f\u7f8e", "updated": 1757223501.539127}, {"category": "ai", "description": "", "link": "https://space.bilibili.com/1118867116?spm_id_from=333.337.0.0", "name": "\u9053\u4eba\u8096\u9ed1\u5b50", "updated": 1757224141.81564}, {"category": "\u7f8e\u98df", "description": "", "link": "https://space.bilibili.com/1794060658?spm_id_from=333.337.0.0", "name": "\u9171\u603b\u5f88\u5fd9_", "updated": 1757165390.9537287}, {"category": "\u97f3\u4e50", "description": "", "link": "https://space.bilibili.com/396104008?spm_id_from=333.337.0.0", "name": "\u9634\u4e50\u4eba\u677e\u677e", "updated": 1757164632.8907752}, {"category": "\u914d\u97f3", "description": "", "link": "https://space.bilibili.com/1888734173?spm_id_from=333.337.0.0", "name": "\u9732\u7948\u5e74\u5e74\u60f3", "updated": 1757223141.4850404}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/3546875514850157?spm_id_from=333.337.0.0", "name": "\u9a6c\u52a0\u516d2", "updated": 1757159563.5303817}, {"category": "\u6897", "description": "", "link": "https://space.bilibili.com/3546966854208283?spm_id_from=333.788.upinfo.detail.click", "name": "\u9a7e\u8003\u66fe\u6559\u7ec3", "updated": 1757391399.681407}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3546919758465355?spm_id_from=333.337.0.0", "name": "\u6211\u4e0d\u662f\u4e10\u7687", "updated": 1757171046.0179093}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/18302399?spm_id_from=333.337.0.0", "name": "\u83dc\u519c\u6765\u8fa3", "updated": 1758551995.2580388}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3493258237839458?spm_id_from=333.337.0.0", "name": "\u7532\u9aa8\u6587DM67\u5fb7\u99ac\u6797\u93e1\u5fb7", "updated": 1758552167.130333}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3493129600633580?spm_id_from=333.337.0.0", "name": "\u6797\u93e1\u5fb7\u5fb7\u99acDM67\u7532\u9aa8\u6587", "updated": 1758552244.3479235}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/11218501?spm_id_from=333.337.search-card.all.click", "name": "Airly_", "updated": 1758552770.1946864}], "description": "\u9ad8\u4e86\uff08", "name": "\u5c0f\u4f5c\u574a", "sidebackground": "template_1_s_4.png"}, {"active": true, "background": "template_elementy_background_4.png", "collapse": false, "content": [{"category": "\u52a8\u753b\u5c0f\u5267\u573a", "description": "", "link": "https://space.bilibili.com/503761455?spm_id_from=333.337.0.0", "name": "1\u519c\u6751\u5c11\u7237", "updated": 1757173679.3527765}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3493118605264995?spm_id_from=333.337.0.0", "name": "54\u7b80\u5c0f\u68a6", "updated": 1757223266.9765344}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3493133790742686?spm_id_from=333.337.0.0", "name": "986_4826", "updated": 1757223607.5394223}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/3546607859533873?spm_id_from=333.337.0.0", "name": "--1_n", "updated": 1757223783.468488}, {"category": "\u753b\u753b", "description": "", "link": "https://space.bilibili.com/477984187?spm_id_from=333.337.0.0", "name": "FORJED", "updated": 1757171119.5284839}, {"category": "ai", "description": "", "link": "https://space.bilibili.com/383055067?spm_id_from=333.337.0.0", "name": "SL_\u7262\u68ee", "updated": 1757174763.5329788}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/692502867?spm_id_from=333.337.0.0", "name": "_ikun_-_-", "updated": 1757172548.8879402}, {"category": "\u8d5b\u9a6c\u5a18\u76f8\u5173", "description": "", "link": "https://space.bilibili.com/488472921?spm_id_from=333.337.0.0", "name": "c-\u8d85\u7ea7\u597d", "updated": 1757171364.6131468}, {"category": "\u5c11\u5973\u4e50\u961f\u76f8\u5173(gbc\uff0cmygo...)", "description": "", "link": "https://space.bilibili.com/486194856?spm_id_from=333.337.0.0", "name": "strst\u96e8", "updated": 1757172619.160444}, {"category": "\u4e8c\u6b21\u5143\u76f8\u5173(\u52a8\u6f2b\uff0c\u4e8c\u6e38...)", "description": "", "link": "https://space.bilibili.com/2061131593?spm_id_from=333.337.0.0", "name": "\u4e66\u7ecf\u9986\u9986\u957f", "updated": 1757172498.43754}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/558262813?spm_id_from=333.337.0.0", "name": "\u5168\u7403\u68cd\u6bcd\u7814\u7a76\u6240", "updated": 1757171403.5296981}, {"category": "ai", "description": "", "link": "https://space.bilibili.com/3546928943991299?spm_id_from=333.337.0.0", "name": "\u52b3\u5927\u6765\u8098\u51fb", "updated": 1757170940.5115402}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/1411212523/?spm_id_from=333.788.upinfo.detail.click", "name": "\u52e4\u594b\u7684\u79cd\u5730\u54e5", "updated": 1757392759.0534828}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3546748941240727?spm_id_from=333.337.0.0", "name": "\u5343\u973d\u701a", "updated": 1757171391.3899558}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/3546888001292497?spm_id_from=333.337.0.0", "name": "\u5355\u7eaf\u70ab\u538b\u6291", "updated": 1757393364.4375834}, {"category": "\u5c11\u5973\u4e50\u961f\u76f8\u5173(gbc\uff0cmygo...)", "description": "", "link": "https://space.bilibili.com/450899395?spm_id_from=333.337.0.0", "name": "\u5361\u5bc6\u4e30\u5ddd\u7965", "updated": 1757170898.694235}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3546865817619182?spm_id_from=333.788.upinfo.detail.click", "name": "\u53d9\u5b87-", "updated": 1757391346.633952}, {"category": "ai", "description": "", "link": "https://space.bilibili.com/3493083861748576?spm_id_from=333.337.0.0", "name": "\u53ef\u53ef\u513f\u7ae5\u7761\u524d\u6545\u4e8b", "updated": 1757225857.329247}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/493788172?spm_id_from=333.337.0.0", "name": "\u540d\u5b57\u662f\u771f\u5f97", "updated": 1757226955.0427399}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/14730375?spm_id_from=333.337.0.0", "name": "\u54c8\u57fa\u5cf0\u80fd\u4e0d\u80fd\u53cd\u51fb", "updated": 1757172433.8952677}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/3493294933805924?spm_id_from=333.337.0.0", "name": "\u54c8\u57fa\u9999\u4e09\u89d2\u6d32", "updated": 1757173615.2191505}, {"category": "\u5c11\u5973\u4e50\u961f\u76f8\u5173(gbc\uff0cmygo...)", "description": "", "link": "https://space.bilibili.com/660169244?spm_id_from=333.337.0.0", "name": "\u563b\u563b\u591a\u90c1\u4ee3", "updated": 1757172510.8068583}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://m.bilibili.com/space/3546848050547351", "name": "\u5713\u5934\u7684\u8004\u800b", "updated": 1757172992.1261356}, {"category": "\u5c11\u5973\u4e50\u961f\u76f8\u5173(gbc\uff0cmygo...)", "description": "", "link": "https://space.bilibili.com/670460218?spm_id_from=333.337.0.0", "name": "\u590f\u65e5\u67af\u7aed\u4e2d", "updated": 1757170913.9860036}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/617178633?spm_id_from=333.337.0.0", "name": "\u5916\u661f\u795e\u79d8\u95f4\u8c0d", "updated": 1757223943.9253268}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/556605603?spm_id_from=333.337.0.0", "name": "\u5929\u4f7f\u5934\u76ae\u5c51", "updated": 1757171104.7200289}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3546684730641106?spm_id_from=333.337.0.0", "name": "\u5976\u9f99\u56fd\u670d\u9a6c\u53ef", "updated": 1757226228.2804415}, {"category": "\u7f8e\u98df", "description": "", "link": "https://space.bilibili.com/3546907943110889?spm_id_from=333.337.0.0", "name": "\u5b9d\u5b50\u5927\u9e21\u86cb", "updated": 1757170927.637671}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3546890289285186?spm_id_from=333.337.0.0", "name": "\u5c0f\u4f0d\u9001\u795d\u798f", "updated": 1757223472.9978626}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/3546585361287605?spm_id_from=333.337.0.0", "name": "\u5c0f\u53f8fengyuan", "updated": 1757172352.1689918}, {"category": "\u753b\u753b", "description": "", "link": "https://space.bilibili.com/3494356015123243?spm_id_from=333.337.0.0", "name": "\u5e33\u865f\u672a\u6ce8\u92b7", "updated": 1757171322.6383123}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/372721240?spm_id_from=333.337.0.0", "name": "\u5f20\u827a\u6d0b", "updated": 1757172397.6907053}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/1142356803?spm_id_from=333.337.0.0", "name": "\u5f80\u751f\u306e\u9ed1\u66dc", "updated": 1757172226.9235284}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/1817415717?spm_id_from=333.337.0.0", "name": "\u606d\u559c\u88ab\u606d\u559c", "updated": 1757172379.4909613}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3546880132778616?spm_id_from=333.337.0.0", "name": "\u6211\u662f\u5173\u5c71\u54c7", "updated": 1757172459.9694092}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/3546691160508923?spm_id_from=333.337.0.0", "name": "\u6252\u9e2d\u5c41\u80a1\u5012\u9171\u6cb9", "updated": 1757172634.8767672}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/102512933?spm_id_from=333.337.0.0", "name": "\u6253\u7cfb\u4f60\u59b9\u7684\u54c8\u5947", "updated": 1757171030.801746}, {"category": "ai", "description": "", "link": "https://space.bilibili.com/3546792660568398?spm_id_from=333.337.0.0", "name": "\u62bd\u8c61\u73a9\u73a9", "updated": 1758551408.636447}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/49095555?spm_id_from=333.337.0.0", "name": "\u6587\u53f2\u54f2\u624b\u672f\u5200", "updated": 1757224992.0617886}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3546692521560875?spm_id_from=333.337.0.0", "name": "\u662f\u674e\u8363\u554a", "updated": 1757172605.9024892}, {"category": "ai", "description": "", "link": "https://space.bilibili.com/1985268875?spm_id_from=333.337.0.0", "name": "\u6700\u5f3a\u98df\u5149", "updated": 1757226830.9932055}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/1444712535?spm_id_from=333.337.0.0", "name": "\u672c\u571f\u5165\u571f", "updated": 1757172213.6305509}, {"category": "\u6211\u7684\u4e16\u754c\uff0c\u8ff7\u4f60\u4e16\u754c", "description": "", "link": "https://space.bilibili.com/3493142732998844?spm_id_from=333.337.0.0", "name": "\u6743\u5a01\u6f58\u5927\u6768", "updated": 1757171376.2916389}, {"category": "ai", "description": "", "link": "https://space.bilibili.com/1254294604?spm_id_from=333.788.upinfo.detail.click", "name": "\u6768\u6885-\u5927\u4ed9", "updated": 1757391256.8428621}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/1028172267?spm_id_from=333.337.0.0", "name": "\u6b7b\u658b\u7231\u9e7f\u5173", "updated": 1757172471.8099322}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3461562404702918?spm_id_from=333.337.0.0", "name": "\u6bdb\u4fca\u95211678", "updated": 1757170885.0876179}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/354273168?spm_id_from=333.337.0.0", "name": "\u70ce\u7684\u590f\u68a6", "updated": 1757172647.2562115}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/3546812929542522?spm_id_from=333.337.0.0", "name": "\u7262\u68a6\u53ea\u7231\u65e5\u5948\u9171", "updated": 1757172339.4086218}, {"category": "\u5c11\u5973\u4e50\u961f\u76f8\u5173(gbc\uff0cmygo...)", "description": "", "link": "https://space.bilibili.com/1588352589?spm_id_from=333.337.0.0", "name": "\u732a\u6258\u90a6\u5e02\u6c11", "updated": 1757171002.4684982}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/701931916?spm_id_from=333.337.0.0", "name": "\u73af\u661f\u5de5\u4f5c\u5ba4", "updated": 1757224528.683088}, {"category": "\u5c11\u5973\u4e50\u961f\u76f8\u5173(gbc\uff0cmygo...)", "description": "", "link": "https://space.bilibili.com/3546615361047431?spm_id_from=333.337.0.0", "name": "\u751c\u9177\u5077\u6478\u96f6", "updated": 1757172562.4028685}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/1586498851?spm_id_from=333.788.upinfo.detail.click", "name": "\u767bolddeng", "updated": 1757391297.7420042}, {"category": "\u5c11\u5973\u4e50\u961f\u76f8\u5173(gbc\uff0cmygo...)", "description": "", "link": "https://space.bilibili.com/62074246?spm_id_from=333.337.0.0", "name": "\u795e\u5973\u4e30\u5ddd\u7965", "updated": 1757170866.7197328}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/3546912485542073?spm_id_from=333.337.0.0", "name": "\u797a\u59bb\u5a31\u4e50", "updated": 1757226332.3899949}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/1744980996?spm_id_from=333.337.0.0", "name": "\u797a\u59bb\u653e\u6620\u5385", "updated": 1757226353.4609525}, {"category": "ai", "description": "", "link": "https://space.bilibili.com/15536044?spm_id_from=333.337.0.0", "name": "\u7b11\u71ac\u6d46\u7cca456", "updated": 1757170953.2772784}, {"category": "ai", "description": "", "link": "https://space.bilibili.com/3546741798340711?spm_id_from=333.337.0.0", "name": "\u8098\u51fb\u65e0\u654c\u59b9", "updated": 1757171079.523558}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/481622566?spm_id_from=333.337.0.0", "name": "\u8147\u74b6\u7a31\u7e77\u7675\u789e\u8350\u70e6\u92b6\u74f3", "updated": 1757172661.8854127}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3493275640007615?spm_id_from=333.337.0.0", "name": "\u8d3e\u91d1\u65af\u8d1d\u8d1d", "updated": 1758551841.7210033}, {"category": "\u5c11\u5973\u4e50\u961f\u76f8\u5173(gbc\uff0cmygo...)", "description": "", "link": "https://space.bilibili.com/507095648?spm_id_from=333.337.0.0", "name": "\u8d85\u96c4nina\u9171", "updated": 1757175058.923487}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/505654486?spm_id_from=333.337.0.0", "name": "\u8db3\u7403\u626f\u6de1\u5c406657", "updated": 1757223305.9424736}, {"category": "\u5c11\u5973\u4e50\u961f\u76f8\u5173(gbc\uff0cmygo...)", "description": "", "link": "https://space.bilibili.com/1695815153?spm_id_from=333.337.0.0", "name": "\u9ad8\u68c9\u6ce2\u5947\u9171", "updated": 1757172483.9529212}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/1954861945?spm_id_from=333.337.0.0", "name": "\u9b3c\u755cRUS", "updated": 1757172448.7937355}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/3546818728167960?spm_id_from=333.337.0.0", "name": "\u9e7f\u51a0\u4e09\u89d2\u6d32\u884c\u52a8", "updated": 1757171419.9115686}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3546742471526985?spm_id_from=333.337.0.0", "name": "DM67\u5fb7\u99ac\u7532\u9aa8\u6587\u6797\u93e1\u5fb7", "updated": 1758552311.7665112}], "description": "\u4e94\u5b57\u795e\u4eba", "name": "\u4e94\u5b57\u795e\u4eba", "sidebackground": "template_1_s_5.png"}, {"active": true, "background": "template_elementy_background_5.png", "collapse": false, "content": [{"category": "\u4e8c\u6b21\u5143\u76f8\u5173(\u52a8\u6f2b\uff0c\u4e8c\u6e38...)", "description": "", "link": "https://space.bilibili.com/388827090?spm_id_from=333.337.0.0", "name": "91\u96f6\u8001\u5e08", "updated": 1757173886.1957202}, {"category": "\u5c0f\u8bf4", "description": "", "link": "https://space.bilibili.com/1816201855?spm_id_from=333.788.upinfo.detail.click", "name": "HelloKitty\u9171\u4e36", "updated": 1757391209.698765}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/3546912493930998?spm_id_from=333.337.0.0", "name": "Patty-Papa", "updated": 1757173477.2935534}, {"category": "\u914d\u97f3", "description": "", "link": "https://space.bilibili.com/1279718300?spm_id_from=333.337.0.0", "name": "bili_1279718300", "updated": 1757174522.735589}, {"category": "\u753b\u753b", "description": "", "link": "https://space.bilibili.com/3546896180185569?spm_id_from=333.337.0.0", "name": "cool_bear1987", "updated": 1757173508.2669384}, {"category": "\u5c11\u5973\u4e50\u961f\u76f8\u5173(gbc\uff0cmygo...)", "description": "", "link": "https://space.bilibili.com/498618937?spm_id_from=333.337.0.0", "name": "\u4e91\u529b\u529b\u725b\u9b54", "updated": 1757173711.1514566}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3494369992640744?spm_id_from=333.337.0.0", "name": "\u56e0\u6613\u901d\u800c\u73cd\u60dc", "updated": 1757173571.702371}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3546867119950656?spm_id_from=333.337.0.0", "name": "\u5c18\u5251\u7075", "updated": 1757174163.5343204}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3546912615566208?spm_id_from=333.337.0.0", "name": "\u5c5137\u7684\u526f\u8bbe\u5c5174", "updated": 1757173111.921416}, {"category": "\u4e8c\u6b21\u5143\u76f8\u5173(\u52a8\u6f2b\uff0c\u4e8c\u6e38...)", "description": "", "link": "https://space.bilibili.com/1661680481?spm_id_from=333.337.0.0", "name": "\u66f2\u6cb9\u6e20\u4eac\u676d", "updated": 1757173727.6538222}, {"category": "ai", "description": "", "link": "https://space.bilibili.com/3546723249032042/?spm_id_from=333.788.upinfo.detail.click", "name": "\u674f\u4ec1\u9732\u7075\u611f", "updated": 1757392867.11783}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/1341823257?spm_id_from=333.337.0.0", "name": "\u6768\u4e0d\u5230", "updated": 1757174093.8608708}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3537110369831807?spm_id_from=333.337.0.0", "name": "\u68a7\u6850\u4ed9\u9662", "updated": 1757175025.844765}, {"category": "\u4e8c\u6b21\u5143\u76f8\u5173(\u52a8\u6f2b\uff0c\u4e8c\u6e38...)", "description": "", "link": "https://space.bilibili.com/3546686708255657/?spm_id_from=333.788.upinfo.detail.click", "name": "\u6d6a\u82b1\u82b1_", "updated": 1757392911.3448853}, {"category": "ai", "description": "", "link": "https://space.bilibili.com/3546883588885372?spm_id_from=333.337.0.0", "name": "\u7262\u5927AI\u7248", "updated": 1757174929.5222356}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/678329519?spm_id_from=333.337.0.0", "name": "\u897f\u90e8\u75af\u4eba\u9662", "updated": 1757173631.8428147}, {"category": "\u5c0f\u54c1", "description": "", "link": "https://space.bilibili.com/3546777584142612/?spm_id_from=333.788.upinfo.detail.click", "name": "\u8d75\u5955\u94ed\u554a", "updated": 1757392802.1777234}, {"category": "\u8d5b\u9a6c\u5a18\u76f8\u5173", "description": "", "link": "https://space.bilibili.com/3546791052052812?spm_id_from=333.337.0.0", "name": "\u9a6c\u5a18\u626f\u6de1\u5c40", "updated": 1757173129.0084162}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/1753647717?spm_id_from=333.788.upinfo.detail.click", "name": "\u5c0f\u6c64\u56ed\u7684\u725b\u5976", "updated": 1758551950.193266}], "description": "\u8bf7\u8f93\u5165\u6587\u672c", "name": "\u7c7b\u4eba", "sidebackground": "template_1_s_6.png"}, {"active": true, "background": "template_elementy_background_6.png", "collapse": false, "content": [{"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/3546934218328542?spm_id_from=333.337.0.0", "name": "\u4e00\u72ad\u6614\u730e\u5947", "updated": 1757174079.4229138}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/3546912200329587?spm_id_from=333.337.search-card.all.click", "name": "\u5353\u4e8c\u51e1", "updated": 1757827161.3060899}, {"category": "\u6076\u641e", "description": "", "link": "https://space.bilibili.com/281920670?spm_id_from=333.337.search-card.all.click", "name": "\u5353\u56db\u51e1", "updated": 1757827153.336078}, {"category": "\u6e38\u620f\u76f8\u5173(gmod\uff0c\u7c7b\u5854\u79d1\u592b...)", "description": "", "link": "https://space.bilibili.com/3493118609460054?spm_id_from=333.337.0.0", "name": "\u54c8\u592b\u514b\u519b\u4e8b\u90e8\u90e8\u957f\u964c\u5ddd", "updated": 1757174067.5808208}, {"category": "\u4e8c\u6b21\u5143\u76f8\u5173(\u52a8\u6f2b\uff0c\u4e8c\u6e38...)", "description": "", "link": "https://space.bilibili.com/3546752453970268?spm_id_from=333.788.upinfo.detail.click", "name": "\u5ca9\u73b2\u540c_\u6069\u5e08\u9676\u5409\u5409", "updated": 1757391155.3292048}, {"category": "\u5176\u4ed6", "description": "", "link": "https://space.bilibili.com/3546840242850619", "name": "\u961d-\u9632", "updated": 1757174050.451936}], "description": "\u3164\u3164\u3164", "name": "\u5f41", "sidebackground": "template_1_s_7.png"}], "minlayerheight": 9.0, "modaction": false, "name": "bilibili_strange_account", "nsfw": false, "proposalsrestricted": false, "proposalswanted": true, "public_pending": null, "public_pending_public": null, "relevant": [], "relevanticebergs": [], "side": true, "subcategories": [], "subcategorylegend": true, "tagproposals": [], "tags": ["bilibili", "chinese", "weird", "account_number", "chinese_internet"], "uselevelnames": true, "visibility": 3, "wip": true},
+		edit: false,
+    editname: false,
+    categories: ["Animals\u0026Nature", "Anime\u0026Manga", "Art\u0026Culture", "Books\u0026Literature", "Business\u0026Organizations", "Food\u0026Cooking", "Geography", "History", "Human", "Internet", "Lost Media", "Minecraft", "Movies", "Movies-Meta", "Music", "Music-Meta", "Nostalgia", "Roblox", "Roleplaying\u0026Characters", "Science", "Sports", "Technology", "Television", "Television-Meta", "Traditional Games", "Vehicles", "Videogames-Console", "Videogames-PC", "Videogames-Meta", "Weird", "Youtube", "Meta\u0026Other", "Site related", "Site feedback", "Artbergs", "Interactive", "Linkbergs", "Surveys\u0026Polls", "Tournaments", "Memes", "Tierlists", "Personal"],
+    OTHER_CATEGORIES: ["Site feedback", "Artbergs", "Interactive", "Linkbergs", "Surveys\u0026Polls", "Tournaments", "Memes", "Tierlists", "Personal"],
+    category: "Weird",
+    layouts: {"3 columns": "threecolumns", "3 columns - centered": "threecolumnscentered", "shuffled": "shuffled", "side by side": "sidebyside"},
+    editlevels: false,
+    withinlevels: false,
+    editcsv: false,
+    fonts: ["arial", "verdana", "helvetica", "tahoma", "trebuchet ms", "times new roman", "georgia", "garamond", "courier new", "brush script mt", "amongus1", "amongus2", "pusab", "minecraft", "gumball", "bauhausbold", "spongeboy", "adultswim", "nunito", "nunitolight", "roblox", "allan", "ceviche", "federant", "londrina"],
+    fontweights: {"Bold": 700, "Extra Bold": 800, "Extra Light": 200, "Heavy": 900, "Light": 300, "Medium": 500, "Normal": 400, "Semi Bold": 600, "Thin": 100},
+    optin: false,
+    watermark: false,
+    resetdelete: false,
+    editexplainers: false,
+    editrelevant: false,
+    templates: ["Polareath\u0027s Iceberg - 8 tiers", "Ryuusu\u0027s Library - 8 tiers", "Simple 3D Iceberg - 8 tiers", "Blue Llama\u0027s Iceberg - 8 tiers", "TruMediumI\u0027s Iceberg - 10 tiers", "Trakked\u0027s Eye - 8 tiers", "Pixel Iceberg - 8 tiers", "Dy\u0027s Dimensions - 6 tiers", "Green Background - 8 tiers", "Polareath\u0027s Iceberg - 10 tiers", "Long Pixel Iceberg - 16 tiers", "Roblox Iceberg - 8 tiers", "Noidy\u0027s Ice Cube - 8 tiers", "Ludwig\u0027s Strangeberg - 10 tiers", "MS Paint Iceberg - 6 tiers", "Devin\u0027s 2D-Berg - 8 tiers", "BFDI - 8 tiers", "Simple 2D Ice - 8 tiers", "Simple 2D Ice 2 - 6 tiers", "JoeBobs\u0027 Drawing - 10 tiers", "joebobbrooks\u0027 lllong - 12 tiers", "Beetster\u0027s Good Template - 12 tiers", "Alan\u0027s Noteberg - 6 tiers", "The 0rk3berg - 8 tiers", "boredspectator\u0027s Mineberg - 10 tiers", "Morgan\u0027s Pixelberg - 6 tiers", "Morgan\u0027s Flipberg - 6 tiers", "AceHusky23\u0027s MediBangPaintBerg - 10 tiers", "InterTalk\u0027s PrettyBlue - 8 tiers", "TruMediumI\u0027s Iceberg to Heck - 20 tiers", "HeadInAMicrowave\u0027s Stickberg - 8 tiers", "Tru\u0027s Snowberg - 10 tiers", "lory\u0027s goodberg - 10 tiers", "TruMediumI\u0027s Textberg - 8 tiers", "TruMediumI\u0027s Flatberg with A Point - 8 tiers", "Oval Iceberg - 7 tiers", "HeadInAMicrowave\u0027s Landberg - 8 tiers", "HeadInAMicrowave\u0027s Bigberg - 9 tiers", "Beetsters Clipberg - 8 tiers", "Another Iceberg Doodle by Tru - 8 tiers", "Tru\u0027s Eyesglumberger - 8 tiers", "TruMediumI\u0027s Glass Window Artberg - 10 tiers", "DevenaComet\u0027s Sunset-berg - 8 tiers", "Lory\u0027s Large iceberg - 29 tiers", "TruMediumI\u0027s Creepberg - 8 tiers", "HeadInAMicrowave\u0027s Scribbleberg - 8 tiers", "HeadInAMicrowave\u0027s Giantberg - 35 tiers", "TruMediumI\u0027s Darkberg - 9 tiers", "Tru\u0027s Kawaiiberg - 8 tiers", "HeadInAMicrowave\u0027s 3dBerg - 8 tiers", "Tierlist - 7 tiers", "Black Background - 8 tiers", "Mu78L\u0027s Iceberg - 8 tiers", "InhiXD\u0027s Octoberg - 6 tiers", "MMV\u0027s Blurberg - 8 tiers", "FlamiSur\u0027s Glitchberg - 8 tiers", "TripedalStud\u0027s DoaWK Iceberg - 8 tiers", "1mvghost\u0027s Megaberg - 16 tiers", "TripedalStud\u0027s Studberg - 8 tiers", "InhiXD\u0027s Simple Iceberg - 9 tiers", "HeadInAMicrowave\u0027s AverageBerg - 8 tiers", "DarnYouToHeck\u0027s Wildlifeberg - 8 tiers", "Goofs Iceberg - 8 tiers", "ElementyFireXD\u0027s Iceberg - 7 tiers", "Blueyaus\u0027s Iceberg - 8 tiers", "Kid Cosmic on Erodius - 10 tiers", "tomrichardson1993\u0027s Fujiberg - 8 tiers", "InhiXD\u0027s Leaves to Roots - 8 tiers", "InhiXD\u0027s Medievalberg - 8 tiers", "Plackoey\u0027s Iceberg - 7 tiers", "HeadInAMicrowave\u0027s Massiveberg - 35 tiers", "HeadInAMicrowave\u0027s Deepberg - 14 tiers"],
+    templatepreview: null,
+    sortentries: false,
+    editborder: false,
+    favhover: false,
+    highlightupdated: false,
+    iscreated: false,
+    editdescription: false,
+    icontypes: ["base", "\u003e95% links", "\u003e2/3 links", "\u003e1/3 links", "has custom sidebar images", "has custom background images", "has categories", "has subcategories", "has explainer video", "\u003e95% descriptions", "\u003e2/3 descriptions", "\u003e1/3 descriptions", "community favorite - opal - top 1%", "community favorite - gold - top 5%", "community favorite - silver - top 10%", "community favorite - bronze - top 15%", "\u003e1000 entries", "\u003e500 entries", "\u003e200 entries", "\u003e125 entries"],
+    advancedmoving: false,
+    advancedmodification: false,
+    imagedownloadoptions: false,
+    changetemplate: false,
+    edittop: false,
+    editleveldescriptions: false,
+    clipboardcopied: false,
+    languages: [],
+    proposal_subcategories: [],
+    editadvancedlinks: false,
+    clicked: {},
+    loadtime: (+Date.now())/1000,
+    changedelta: 60*60*6,
+    twentyfourhours: 60*60*24,
+    proposalcolor: "green",
+    proposalstatus: null,
+    proposetier: null,
+    advancedmodificationtier: null,
+    commenterror: "",
+    levelsubcats: {},
+    owneronly: false,//autoreplace edit code only for original creator
+    editrelevanticebergs: false,
+    categoryfilter: [],
+    subcategoryfilter: [],
+    editsettings: false,
+    MAXENTRIESPERLAYER: 300,
+    nocategorywarnings: 0,
+    visibilitychanged: false,
+  },
+  mounted: function mounted(){
+    this.iscreated = true;
+  },
+  created: function created() {
+  },
+  computed: {
+    hasEnoughEntries() {
+      if (this.iceberg.levels === undefined) {
+        return false;
+      }
+
+      var entries = 0;
+      for (level of this.iceberg.levels) {
+        entries += level.content.length
+      }
+      return entries >= 15;
+    },
+    entries: function() {
+      return this.iceberg.levels.reduce((a,b)=>a+b.content.length, 0)
+    },
+    linktext: function() {
+      return this.iceberg.name.split('_').join(' ') + " Iceberg Chart"
+    },
+  },
+	methods: {
+    doOptin() {
+      app.optin = true;
+    },
+    fullLink(link) {
+      if (link.indexOf(":") == -1) {
+        return "https://" + link;
+      }
+      return link;
+    },
+    has95pLinks: function() {
+      return this.iceberg.icons.includes(">95% links")
+    },
+    has95pDescriptions: function() {
+      return this.iceberg.icons.includes(">95% descriptions")
+    },
+    clickEntry(entry) {
+      this.clicked[entry] = true;
+    },
+    remPropSubCat(subcat) {
+      app.proposal_subcategories = app.proposal_subcategories.filter(e => e != subcat)
+    },
+    linkifyStr(str, opts) {
+      return window.linkifyStr(str, opts)
+    },
+    copyLinkToClipboard() {
+      navigator.clipboard.writeText(window.location.href)
+
+      app.clipboardcopied = true;
+
+      setTimeout(() => {
+        app.clipboardcopied = false;
+      }, 3000)
+    },
+    toDate(timestamp) {
+        var d = new Date(timestamp*1000),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+    },
+    isMobile() {
+      /*
+      if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        return true
+      } else {
+        return false
+      }
+      */
+      return window.innerWidth <= 760;
+    },
+    collapseAll(collapse) {
+      app.collapse = collapse
+    },
+    getByKey(arr,key) {
+      return arr.find(x => x.name === key) || {}
+    },
+    getLowerSubcategoryName(key) {
+      return this.getByKey(this.iceberg.subcategories, key)
+    },
+    showPreview(templatename) {
+      app.templatepreview = "static/" + templatename + ".jpg";
+    },
+    clearPreview() {
+      app.templatepreview = null;
+    },
+    showDescription(params) {
+      //console.log(event)
+      var description = params.description;
+      if (description) {
+        var instance = tippy(event.currentTarget, {content: description})
+        instance.show()
+        //console.log(description)
+      }
+    },
+    filterCategory(category) {
+      if (this.categoryfilter.includes(category.name)) {
+        this.categoryfilter.splice(this.categoryfilter.indexOf(category.name), 1)
+      } else {
+        this.categoryfilter.push(category.name)
+      }
+      app.$forceUpdate()
+    },
+    filterSubcategory(subcategory) {
+      if (this.subcategoryfilter.includes(subcategory.name)) {
+        this.subcategoryfilter.splice(this.subcategoryfilter.indexOf(subcategory.name), 1)
+      } else {
+        this.subcategoryfilter.push(subcategory.name)
+      }
+      app.$forceUpdate()
+    },
+    openLink(params) {
+      console.log("here")
+      var link = params.link;
+      console.log(params)
+      //console.log("opening", link)
+      if (link) {
+        window.open(link, '_blank');
+      }
+    },
+	}
+})
+
+</script>
+
+<style>
+
+.floatright {
+  float: right;
+  right: 0;
+}
+
+.favorite {
+
+}
+
+.entryinput {
+  border: 1px #ccc solid;
+  border-radius: 5px;
+  height: 2em;
+}
+
+.updated {
+  background-color: rgba(255,245,200,0.75);
+}
+
+.saved {
+    animation-name: example;
+    animation-duration: 2s;
+}
+
+@keyframes example {
+  from {background-color: lightgreen;}
+  to {background-color: white;}
+}
+
+.entrylink:hover {
+  filter: brightness(80%);
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+.tree-menu {
+  border: 1px solid purple;
+  margin: 1em;
+  min-width: 25em;
+}
+
+.tree-menu:nth-child(2n) {
+    background-color: rgba(0,0,120,0.2);
+}
+
+.tree-menu:nth-child(2n+1) {
+    background-color: rgba(0,0,100,0.2);
+}
+
+.side {
+  background-color: black;
+  background-position: center;
+  min-height:10vw;
+  padding-bottom: 1em;
+  border: 2px solid purple;
+  background-size: cover;
+  display: inline-block;
+  float: right;
+  width: 20%;
+}
+
+.updatedentry {
+  background-color: rgba(255,255,0,0.9);
+}
+
+.edited {
+  background-color: lightyellow;
+}
+
+
+.layer {
+	border: solid purple;
+	background-size: cover;
+	background-position: center;
+	padding-bottom: 1em;
+}
+
+.layer h2 {
+  margin-bottom: 0;
+}
+
+@media screen and (max-width : 480px) {
+  .layer {
+    border: 1px solid purple;
+  }
+
+  .side {
+    border: 1px solid purple;
+  }
+}
+
+.left {
+  text-align: left;
+}
+
+.spoiler {
+  background-color: #333333;
+  border-radius: 0.2em;
+  color: transparent !important;
+  z-index: 100;
+}
+
+.spoiler:target {
+  background: transparent;
+  color: inherit;
+}
+
+.advancedimages {
+  background-color: rgba(255,255,0,0.3);
+}
+
+.advancedentries {
+  background-color: rgba(255,0,255,0.3);
+}
+
+.advancedlevels {
+  background-color: rgba(0,255,255,0.3);
+}
+
+.advancedothers {
+  background-color: rgba(255,255,255,0.3);
+}
+
+.notfavorite:hover {
+  color: gold;
+}
+
+.proposalheader {
+  text-decoration: underline;
+  font-size: 110%;
+}
+
+.proposal {
+  color: rgba(100,140,200,0.8);
+  font-style: italic;
+  padding-left: 10px;
+}
+
+.categoryshadow:hover {
+  filter: brightness(85%);
+}
+
+.selectedcategory {
+  border: 2px solid purple;
+  border-radius: 10px;
+  background-color: rgba(255,255,255,0.8);
+}
+</style>
+
+
+
+</body>
+</html>
