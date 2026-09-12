@@ -64,7 +64,7 @@
 | 🌐 **原网站（已关闭）** | [icebergcharts.com/i/Bilibili_strange_account](https://icebergcharts.com/i/Bilibili_strange_account) |
 | 🧊 **新网站（纪念）** | [chengjoj.github.io/bilibili-strange-account-Iceberg](https://chengjoj.github.io/bilibili-strange-account-Iceberg/) |
 | 📺 **推广视频** | [【冰山图】B站最诡异的账号是什么？](https://www.bilibili.com/video/BV165hCzDE37/) |
-| 💬 **讨论群** | QQ群：`334101307` |
+| 💬 **讨论群** | QQ群：`334101307（已死亡）` |
 
 <a id="zh-structure"></a>
 ### 🧭 冰山结构（示意）
@@ -104,7 +104,7 @@
 **👉 欢迎随时提醒我进行调整！**
 
 也欢迎加入讨论群一起交流：  
-**QQ群：`334101307`**
+**QQ群：`334101307（已死亡）`**
 
 <a id="zh-disclaimer"></a>
 ### 📄 免责声明
@@ -136,7 +136,7 @@ It currently includes **300 entries**. Popularity data is as of **August 27, 202
 | 🌐 **Original Site (Closed)** | [icebergcharts.com/i/Bilibili_strange_account](https://icebergcharts.com/i/Bilibili_strange_account) |
 | 🧊 **Memorial Site (New)** | [chengjoj.github.io/bilibili-strange-account-Iceberg](https://chengjoj.github.io/bilibili-strange-account-Iceberg/) |
 | 📺 **Promo Video** | [【Iceberg】What is the strangest account on Bilibili?](https://www.bilibili.com/video/BV165hCzDE37/) |
-| 💬 **Discussion Group** | QQ Group: `334101307` |
+| 💬 **Discussion Group** | QQ Group: `334101307(Dead)` |
 
 <a id="en-structure"></a>
 ### 🧭 Iceberg Structure
@@ -176,7 +176,7 @@ Because the groups are based on **follower count**, it is hard for me to notice 
 **👉 Feel free to remind me so I can update it!**
 
 You are also welcome to join the discussion group:  
-**QQ Group: `334101307`**
+**QQ Group: `334101307（Dead）`**
 
 <a id="en-disclaimer"></a>
 ### 📄 Disclaimer
