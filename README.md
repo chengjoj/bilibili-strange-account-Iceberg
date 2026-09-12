@@ -6,7 +6,7 @@
 > 一个收录 B 站猎奇 / 诡异账号的冰山图项目  
 > 从表层到深海，越往下越离奇。
 
-[![Website](https://img.shields.io/badge/Website-已关闭%20%2F%20图片纪念-red?style=for-the-badge&logo=githubpages&logoColor=white)](https://icebergcharts.com/i/Bilibili_strange_account)
+[![Website](https://img.shields.io/badge/Website-已关闭%20%2F%20网站纪念-red?style=for-the-badge&logo=githubpages&logoColor=white)](https://icebergcharts.com/i/Bilibili_strange_account)
 [![Bilibili](https://img.shields.io/badge/Bilibili-推广视频-00A1D6?style=for-the-badge&logo=bilibili&logoColor=white)](https://www.bilibili.com/video/BV165hCzDE37/)
 ![QQ Group](https://img.shields.io/badge/QQ群-334101307-12B7F5?style=for-the-badge&logo=tencentqq&logoColor=white)
 ![Entries](https://img.shields.io/badge/词条-300-blue?style=for-the-badge)
@@ -52,7 +52,7 @@
 截至目前共收录 **300 个词条**，热度数据截止至 **2025 年 8 月 27 日**。
 
 > ⚠️ **最新消息**  
-> 由于冰山图网站已关闭，现放出图片留作纪念。  
+> 由于冰山图网站已关闭，现新建网站留作纪念。  
 > 300 个词条，截止 **2025 年 9 月**。
 
 <a id="zh-links"></a>
@@ -60,7 +60,7 @@
 
 | 平台 | 链接 |
 | :--- | :--- |
-| 🌐 **网站地址** | [chengjoj.github.io/bilibili-strange-account-Iceberg](https://chengjoj.github.io/bilibili-strange-account-Iceberg/) |
+| 🌐 **新建网站地址** | [chengjoj.github.io/bilibili-strange-account-Iceberg](https://chengjoj.github.io/bilibili-strange-account-Iceberg/) |
 | 📺 **推广视频** | [【冰山图】B站最诡异的账号是什么？](https://www.bilibili.com/video/BV165hCzDE37/) |
 | 💬 **讨论群** | QQ群：`334101307` |
 
