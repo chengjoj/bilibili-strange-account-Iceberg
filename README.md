@@ -138,4 +138,67 @@ It currently includes **300 entries**. Popularity data is as of **August 27, 202
 | 📺 **Promo Video** | [【Iceberg】What is the strangest account on Bilibili?](https://www.bilibili.com/video/BV165hCzDE37/) |
 | 💬 **Discussion Group** | QQ Group: `334101307` |
 
-<a id="en-
+<a id="en-structure"></a>
+### 🧭 Iceberg Structure
+
+```text
+🌊 Surface ──────────────────────
+   │  Top layer · Popular accounts
+   │  ───────────────────────────
+   │  Middle layer · Niche & bizarre
+   │  ───────────────────────────
+   │  Deep layer · Obscure & strange
+   │  ───────────────────────────
+   ▼  Abyss · Little known
+```
+
+<a id="en-classification"></a>
+### 🗂️ Classification
+
+- 🏷️ **Grouped by popularity** — order within each group is random.
+- 📅 **Data cutoff** — August 27, 2025 and before.
+- 🎯 **Scope** — original-content accounts only; repost accounts are not included.
+- 🧠 **Subjectivity** — this chart is a personal, subjective, and incomplete collection.
+
+<a id="en-notes"></a>
+### ⚠️ Notes
+
+> **1.** This iceberg chart is grouped by popularity. Order within each group is not ranked. Popularity cutoff: **August 27, 2025**.  
+> **2.** **Abstract does not mean low quality.** This chart only lists accounts I personally find strange. **Please do not attack the creators.**  
+> **3.** Only **original-content** accounts are included. Many repost accounts are also bizarre, but they are not included.  
+> **4.** Due to limited ability, this chart includes only a portion and is **highly subjective**.
+
+<a id="en-help"></a>
+### 📣 Help Wanted
+
+Because the groups are based on **follower count**, it is hard for me to notice when an account outgrows its group.
+
+**👉 Feel free to remind me so I can update it!**
+
+You are also welcome to join the discussion group:  
+**QQ Group: `334101307`**
+
+<a id="en-disclaimer"></a>
+### 📄 Disclaimer
+
+This is a personal interest project. All content represents personal views only and does not represent any platform.  
+Please observe respectfully and **respect every creator**. Do not harass or attack account owners.
+
+---
+
+<a id="star"></a>
+## ⭐ Star 支持 / Support
+
+<div align="center">
+
+**如果这个项目让你感到好奇，欢迎点个 ⭐ Star 支持一下！**  
+**If this project makes you curious, please consider giving it a ⭐ Star!**
+
+[🌐 原网站（已关闭）](https://icebergcharts.com/i/Bilibili_strange_account) · [🧊 新网站（纪念）](https://chengjoj.github.io/bilibili-strange-account-Iceberg/) · [📺 观看视频](https://www.bilibili.com/video/BV165hCzDE37/) · [💬 加入讨论群](#zh-help)
+
+</div>
+
+---
+
+<sub>📝 最后更新 / Last Updated: 2025 年 9 月 · 共 300 个词条 / 300 entries</sub>
+```
