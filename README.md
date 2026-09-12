@@ -6,7 +6,7 @@
 > 一个收录 B 站猎奇 / 诡异账号的冰山图项目  
 > 从表层到深海，越往下越离奇。
 
-[![Website](https://img.shields.io/badge/Website-已关闭%20%2F%20图片纪念-red?style=for-the-badge&logo=githubpages&logoColor=white)](https://chengjoj.github.io/bilibili-strange-account-Iceberg/)
+[![Website](https://img.shields.io/badge/Website-已关闭%20%2F%20图片纪念-red?style=for-the-badge&logo=githubpages&logoColor=white)](https://icebergcharts.com/i/Bilibili_strange_account)
 [![Bilibili](https://img.shields.io/badge/Bilibili-推广视频-00A1D6?style=for-the-badge&logo=bilibili&logoColor=white)](https://www.bilibili.com/video/BV165hCzDE37/)
 ![QQ Group](https://img.shields.io/badge/QQ群-334101307-12B7F5?style=for-the-badge&logo=tencentqq&logoColor=white)
 ![Entries](https://img.shields.io/badge/词条-300-blue?style=for-the-badge)
