@@ -13,6 +13,3 @@ https://chengjoj.github.io/bilibili-strange-account-Iceberg/
 
 #####
 [最新消息]由于冰山图网站关闭，所以发一下图片留作纪念，一共300个词条截止2025年9月份的猎奇账号
-
-网站源码：https://pan.baidu.com/s/1efTIccYO6WzNyg9IQsWa1w?pwd=1234 提取码: 1234
-
